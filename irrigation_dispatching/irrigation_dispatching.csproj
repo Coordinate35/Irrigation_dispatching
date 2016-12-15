@@ -82,6 +82,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="controller\" />
+    <Folder Include="core\" />
     <Folder Include="library\" />
     <Folder Include="maintain\database\" />
     <Folder Include="model\" />
