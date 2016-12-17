@@ -46,7 +46,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="controller\Account.cs" />
+    <Compile Include="Controller\Account.cs" />
+    <Compile Include="Core\DatabaseDriver.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -67,7 +68,9 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <None Include="config\Database.config" />
+    <None Include="Config\Database.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -79,15 +82,17 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="core\" />
-    <Folder Include="library\" />
-    <Folder Include="maintain\database\" />
-    <Folder Include="model\" />
-    <Folder Include="service\" />
-    <Folder Include="view\" />
+    <Folder Include="Library\" />
+    <Folder Include="Maintain\database\" />
+    <Folder Include="Model\" />
+    <Folder Include="Service\" />
+    <Folder Include="Test\" />
+    <Folder Include="View\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

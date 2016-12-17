@@ -8,6 +8,5 @@ namespace irrigation_dispatching.controller
 {
     class Account
     {
-
     }
 }
