@@ -19,9 +19,10 @@ namespace irrigation_dispatching
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new Form1());
+
             string cs = "Data Source=DESKTOP-23E4P5O;Initial Catalog=irrigation_dispatching;Persist Security Info=True;User ID=irrigation_dispatching;Pwd=Irrigationdispatching";
             SqlConnection con = new SqlConnection(cs);
-            string sql = "SELECT * FROM users";
+            string sql = "SELECT * FROM account";
             try
             {
                 con.Open();
@@ -37,7 +38,7 @@ namespace irrigation_dispatching
                 sdr = cmd.ExecuteReader();
                 while (sdr.Read())
                 {
-                    Console.WriteLine(sdr["user_id"] + " " + sdr["user_name"]);
+                    Console.WriteLine(sdr["account_id"] + " " + sdr["account_name"]);
                 }
                 con.Close();
             }
