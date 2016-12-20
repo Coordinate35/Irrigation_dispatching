@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace irrigation_dispatching.controller
 {
-    class Account
+    public class Account
     {
     }
 }

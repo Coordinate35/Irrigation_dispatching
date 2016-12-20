@@ -5,6 +5,8 @@ VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "irrigation_dispatching", "irrigation_dispatching\irrigation_dispatching.csproj", "{43362F11-A829-4468-82C3-16FF7CA3A2A7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "irrigation_dispatchingTests", "irrigation_dispatchingTests\irrigation_dispatchingTests.csproj", "{D86785F9-9C8B-4209-8924-9CDA678865C4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{43362F11-A829-4468-82C3-16FF7CA3A2A7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{43362F11-A829-4468-82C3-16FF7CA3A2A7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{43362F11-A829-4468-82C3-16FF7CA3A2A7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D86785F9-9C8B-4209-8924-9CDA678865C4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D86785F9-9C8B-4209-8924-9CDA678865C4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D86785F9-9C8B-4209-8924-9CDA678865C4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D86785F9-9C8B-4209-8924-9CDA678865C4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

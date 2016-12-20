@@ -7,7 +7,7 @@ using System.Data.SqlClient;
 
 namespace irrigation_dispatching.Core
 {
-    class DatabaseDriver
+    public class DatabaseDriver
     {
         private string dataSource;
         private string initialCatalog;
@@ -35,6 +35,22 @@ namespace irrigation_dispatching.Core
 
             partialCommand = InitializePartialCommand();
             commandsInCommandGet = InitializeGetCommandList();
+        }
+
+        public string ConnectString
+        {
+            get
+            {
+                return connectString;
+            }
+        }
+
+        public string LastQuery
+        {
+            get
+            {
+                return lastQuery;
+            }
         }
 
         private Dictionary<string, string> InitializePartialCommand()
@@ -146,7 +162,7 @@ namespace irrigation_dispatching.Core
                 }
                 else
                 {
-                    lastQuery += partialCommand[singleCommand.Key];
+                    lastQuery += " " + partialCommand[singleCommand.Key];
                 }
             }
             return true;
