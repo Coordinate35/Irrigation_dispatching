@@ -14,7 +14,7 @@ namespace irrigation_dispatching.Core
         private string persistSecurityInfo;
         private string userId;
         private string pwd;
-        private string connectString;
+        private Boolean isQueryChange;
         private SqlConnection connection;
         private Dictionary<string, string> partialCommand;
         private string[] commandList;
@@ -31,7 +31,6 @@ namespace irrigation_dispatching.Core
             this.userId = userId;
             this.pwd = pwd;
             this.persistSecurityInfo = persistSecurityInfo;
-            GenerateConnectString();
 
             partialCommand = InitializePartialCommand();
             commandsInCommandGet = InitializeGetCommandList();
@@ -41,7 +40,7 @@ namespace irrigation_dispatching.Core
         {
             get
             {
-                return connectString;
+                return GenerateConnectString();
             }
         }
 
@@ -56,7 +55,7 @@ namespace irrigation_dispatching.Core
         private Dictionary<string, string> InitializePartialCommand()
         {
             Dictionary<string, string> commands = new Dictionary<string, string>();
-            commandList = new string[] { "select", "from", "where", "orderBy", "limit" };
+            commandList = new string[] { "select", "from", "where", "orderBy" };
             foreach (string commandName in commandList)
             {
                 commands.Add(commandName, null);
@@ -72,13 +71,12 @@ namespace irrigation_dispatching.Core
             commandList.Add("from", true);
             commandList.Add("where", false);
             commandList.Add("orderBy", false);
-            commandList.Add("limit", false);
             return commandList;
         }
 
-        private void GenerateConnectString()
+        private string GenerateConnectString()
         {
-            connectString = String.Format(
+            string connectString = String.Format(
                 "Data Source={0};Initial Catalog={1};Persist Security Info={2};User ID={3};Pwd={4}",
                 dataSource,
                 initialCatalog,
@@ -86,13 +84,15 @@ namespace irrigation_dispatching.Core
                 userId,
                 pwd
             );
+            return connectString;
         }
 
         public bool Connect()
         {
+            string connectString = GenerateConnectString();
             try
             {
-                connection = new SqlConnection(this.connectString);
+                connection = new SqlConnection(connectString);
                 connection.Open();
             }
             catch (SqlException e)
@@ -106,16 +106,19 @@ namespace irrigation_dispatching.Core
         public void SetSelect(string columns)
         {
             partialCommand["select"] = "SELECT " + columns;
+            isQueryChange = true;
         }
 
         public void SetFrom(string tables)
         {
             partialCommand["from"] = "FROM " + tables;
+            isQueryChange = true;
         }
 
         public void SetAndWhere(string condition)
         {
             partialCommand["where"] = "WHERE " + condition;
+            isQueryChange = true;
         }
 
         public void SetAndWhere(string key, string value)
@@ -124,7 +127,8 @@ namespace irrigation_dispatching.Core
             {
                 SetFirstWhere(key, value);
             }
-            partialCommand["where"] = partialCommand["where"] + " " + key + "=" + value; 
+            partialCommand["where"] = partialCommand["where"] + " " + key + "=" + value;
+            isQueryChange = true; 
         }
 
         public void SetAndWhere(string key, int value)
@@ -141,15 +145,16 @@ namespace irrigation_dispatching.Core
         public void SetOrderBy(string colume, string direction = "ASC")
         {
             partialCommand["orderBy"] = "ORDER BY " + colume + " " + direction;
-        }
-
-        public void SetLimit(int limitNumber, int offset)
-        {
-            partialCommand["limit"] = "LIMIT " + limitNumber.ToString() + ", " + offset.ToString();
+            isQueryChange = true;
         }
 
         private bool GenerateGetQuery()
         {
+            if (false == isQueryChange)
+            {
+                return true;
+            }
+            lastQuery = null;
             foreach (KeyValuePair<string, bool> singleCommand in commandsInCommandGet)
             {
                 if ((true == singleCommand.Value) && (null == partialCommand[singleCommand.Key]))
@@ -165,14 +170,15 @@ namespace irrigation_dispatching.Core
                     lastQuery += " " + partialCommand[singleCommand.Key];
                 }
             }
+            isQueryChange = false;
             return true;
         }
 
-        public bool Get()
+        public Dictionary<int, Dictionary<string, Object>> Get()
         {
             if (false == GenerateGetQuery())
             {
-                return false;
+                return null;
             }
             try
             {
@@ -182,9 +188,25 @@ namespace irrigation_dispatching.Core
             catch (Exception e)
             {
                 error = e.ToString();
-                return false;
+                return null;
             }
-            return true;
+            Dictionary<int, Dictionary<string, Object>> result = ConverResultToDictionary(resultReader);
+            return result;
+        }
+
+        private Dictionary<int, Dictionary<string, Object>> ConverResultToDictionary(SqlDataReader resultReader)
+        {
+            Dictionary<int, Dictionary<string, Object>> result = new Dictionary<int, Dictionary<string, Object>>();
+            int i = 0;
+            while (resultReader.Read())
+            {
+                result.Add(i, new Dictionary<string, Object>());
+                for (int j = 0; j < resultReader.FieldCount; j++)
+                {
+                    result[i].Add(resultReader.GetName(j), resultReader[j]);
+                }
+            }
+            return result;
         }
     }
 }

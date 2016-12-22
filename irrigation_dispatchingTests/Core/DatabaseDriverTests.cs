@@ -86,9 +86,40 @@ namespace irrigation_dispatching.Core.Tests
             );
             databaseDriver.Connect();
             databaseDriver.SetSelect("*");
-            databaseDriver.SetFrom("Account");
-            Assert.IsTrue(databaseDriver.Get());
+            databaseDriver.SetFrom("account");
+            Dictionary<int, Dictionary<string, Object>> result = databaseDriver.Get();
             Console.WriteLine(databaseDriver.LastQuery);
+            Dictionary<int, Dictionary<string, Object>> testCase = new Dictionary<int, Dictionary<string, object>>()
+            {
+                {
+                    0,
+                    /*
+                    new Dictionary<string, object>() {
+                        { "account_id", Convert.ChangeType("1", typeof(Object)) },
+                        { "account_name", Convert.ChangeType("Coordinate35", typeof(Object)) },
+                        { "passwd", Convert.ChangeType("123456", typeof(Object)) },
+                        { "register_time", Convert.ChangeType("123456", typeof(Object)) },
+                        { "available", Convert.ChangeType("True", typeof(Object)) }
+                    }
+                    */
+                    new Dictionary<string, object>() {
+                        { "account_id", (Int16)1 },
+                        { "account_name", "Coordinate35" },
+                        { "passwd", "123456" },
+                        { "register_time", 123454 },
+                        { "available", true }
+                    }
+                }
+            };
+            Assert.AreEqual(result.Count, testCase.Count);
+            for (int i = 0; i < testCase.Count; i++)
+            {
+                Assert.AreEqual(result[i].Count, testCase[i].Count);
+                foreach (string key in testCase[i].Keys)
+                {
+                    Assert.AreEqual(result[i][key], testCase[i][key]);
+                }
+            }
         }
     }
 }
