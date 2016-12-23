@@ -20,9 +20,14 @@ namespace irrigation_dispatching.Model
 
         protected abstract void SetTable();
 
-        public Boolean InsertEntry(Dictionary<string, string> entry)
+        public Boolean InsertEntry(Dictionary<string, object> entry)
         {
+            return databaseDriver.Insert(tableName, entry);
+        }
 
+        public Boolean InsertMultiEntry(List<Dictionary<string, object>> entries)
+        {
+            return databaseDriver.Insert(tableName, entries);
         }
     }
 }

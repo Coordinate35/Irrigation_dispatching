@@ -208,5 +208,50 @@ namespace irrigation_dispatching.Core
             }
             return result;
         }
+
+        public bool Insert(string tableName, Dictionary<string, object> entry)
+        {
+            string valuesPart = GenerateInsertValuesItem(entry);
+        }
+
+        public bool Insert(string tableName, List<Dictionary<string, object>> entries)
+        {
+
+        }
+
+        private string GenerateInsertValuesItem(Dictionary<string, object> entry)
+        {
+            string valuesItem = null;
+            foreach (string key in entry.Keys)
+            {
+                if (null == valuesItem)
+                {
+                    if (typeof(String) != entry[key].GetType())
+                    {
+                        valuesItem = "('" + entry[key].ToString() + "'";
+                    }
+                    else
+                    {
+                        valuesItem = "(" + entry[key].ToString();
+                    }
+                }
+                else
+                {
+                    if (typeof(String) != entry[key].GetType())
+                    {
+                        valuesItem = "('" + entry[key].ToString() + "'";
+                    }
+                    else
+                    {
+                        valuesItem = "(" + entry[key].ToString();
+                    }
+                }
+            }
+            if (null != valuesItem)
+            {
+                valuesItem += ")";
+            }
+            return valuesItem;
+        }
     }
 }
