@@ -211,12 +211,79 @@ namespace irrigation_dispatching.Core
 
         public bool Insert(string tableName, Dictionary<string, object> entry)
         {
+            string colPart = GenerateInsertColPart(entry);
             string valuesPart = GenerateInsertValuesItem(entry);
+            lastQuery = GenerateInsertQuery(tableName, colPart, valuesPart);
+            return ExecuteNonQuery();
         }
 
         public bool Insert(string tableName, List<Dictionary<string, object>> entries)
         {
+            string valuePart = null;
+            string colPart = null;
+            if (0 < entries.Count)
+            {
+                colPart = GenerateInsertColPart(entries[0]);
+            }
+            foreach (Dictionary<string, object> row in entries)
+            {
+                if (null == valuePart)
+                {
+                    valuePart = GenerateInsertValuesItem(row);
+                }
+                else
+                {
+                    valuePart += ", " + GenerateInsertValuesItem(row);
+                }
+            }
+            lastQuery = GenerateInsertQuery(tableName, colPart, valuePart);
+            return ExecuteNonQuery();
+        }
 
+        private bool ExecuteNonQuery()
+        {
+            int affectedRowNumber;
+            try
+            {
+                command = new SqlCommand(lastQuery, connection);
+                affectedRowNumber = command.ExecuteNonQuery();
+            }
+            catch (Exception e)
+            {
+                error = e.ToString();
+                return false;
+            }
+            if (0 >= affectedRowNumber)
+            {
+                return false;
+            }
+            return true;
+        }
+
+        private string GenerateInsertColPart(Dictionary<string, object> entry)
+        {
+            string colPart = null;
+            foreach (string key in entry.Keys)
+            {
+                if (null == colPart)
+                {
+                    colPart = "(" + key;
+                }
+                else
+                {
+                    colPart += ", " + key;
+                }
+            }
+            if (null != colPart)
+            {
+                colPart += ")";
+            }
+            return colPart; 
+        }
+
+        private string GenerateInsertQuery(string tableName, string colPart, string valuePart)
+        {
+            return "INSERT INTO " + tableName + colPart + " VALUES " + valuePart;
         }
 
         private string GenerateInsertValuesItem(Dictionary<string, object> entry)
