@@ -52,6 +52,14 @@ namespace irrigation_dispatching.Core
             }
         }
 
+        public string LastError
+        {
+            get
+            {
+                return error;
+            }
+        }
+
         private Dictionary<string, string> InitializePartialCommand()
         {
             Dictionary<string, string> commands = new Dictionary<string, string>();
@@ -126,6 +134,7 @@ namespace irrigation_dispatching.Core
             if (null == partialCommand["where"])
             {
                 SetFirstWhere(key, value);
+                return;
             }
             partialCommand["where"] = partialCommand["where"] + " " + key + "=" + value;
             isQueryChange = true; 
@@ -295,22 +304,22 @@ namespace irrigation_dispatching.Core
                 {
                     if (typeof(String) != entry[key].GetType())
                     {
-                        valuesItem = "('" + entry[key].ToString() + "'";
+                        valuesItem = "(" + entry[key].ToString();
                     }
                     else
                     {
-                        valuesItem = "(" + entry[key].ToString();
+                        valuesItem = "('" + entry[key].ToString() + "'";
                     }
                 }
                 else
                 {
                     if (typeof(String) != entry[key].GetType())
                     {
-                        valuesItem = "('" + entry[key].ToString() + "'";
+                        valuesItem += " ," + entry[key].ToString();
                     }
                     else
                     {
-                        valuesItem = "(" + entry[key].ToString();
+                        valuesItem += " ,'" + entry[key].ToString() + "'";
                     }
                 }
             }

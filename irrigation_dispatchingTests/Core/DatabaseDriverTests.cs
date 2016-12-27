@@ -87,6 +87,7 @@ namespace irrigation_dispatching.Core.Tests
             databaseDriver.Connect();
             databaseDriver.SetSelect("*");
             databaseDriver.SetFrom("account");
+            databaseDriver.SetAndWhere("account_id", 1);
             Dictionary<int, Dictionary<string, Object>> result = databaseDriver.Get();
             Console.WriteLine(databaseDriver.LastQuery);
             Dictionary<int, Dictionary<string, Object>> testCase = new Dictionary<int, Dictionary<string, object>>()
@@ -106,7 +107,7 @@ namespace irrigation_dispatching.Core.Tests
                         { "account_id", (Int16)1 },
                         { "account_name", "Coordinate35" },
                         { "passwd", "123456" },
-                        { "register_time", 123454 },
+                        { "register_time", 1482827993 },
                         { "available", true }
                     }
                 }
@@ -126,11 +127,11 @@ namespace irrigation_dispatching.Core.Tests
         public void InsertTest()
         {
             DatabaseDriver databaseDriver = new DatabaseDriver(
-               Database.DataSource,
-               Database.InitialCatalog,
-               Database.UserId,
-               Database.Pwd,
-               Database.PersistSecurityInfo
+                Database.DataSource,
+                Database.InitialCatalog,
+                Database.UserId,
+                Database.Pwd,
+                Database.PersistSecurityInfo
             );
             databaseDriver.Connect();
             DateTime timeStamp = new DateTime(1970, 1, 1);  //得到1970年的时间戳  
@@ -143,14 +144,42 @@ namespace irrigation_dispatching.Core.Tests
                 { "register_time", now }
             };
             bool result = databaseDriver.Insert("account", account);
-            Console.WriteLine(databaseDriver.LastQuery);
+            Console.WriteLine(databaseDriver.LastError);
             Assert.IsTrue(result);
         }
 
         [TestMethod()]
         public void InsertTest1()
         {
-            Assert.Fail();
+            DatabaseDriver databaseDriver = new DatabaseDriver(
+                Database.DataSource,
+                Database.InitialCatalog,
+                Database.UserId,
+                Database.Pwd,
+                Database.PersistSecurityInfo
+            );
+            databaseDriver.Connect();
+            DateTime timeStamp = new DateTime(1970, 1, 1);  //得到1970年的时间戳  
+            long now = (DateTime.UtcNow.Ticks - timeStamp.Ticks) / 10000000;
+            Console.WriteLine(now);
+            List<Dictionary<string, object>> account = new List<Dictionary<string, object>>()
+            {
+                new Dictionary<string, object>
+                {
+                    { "account_name", "Coordinate35" },
+                    { "passwd", "123456" },
+                    { "register_time", now }
+                },
+                new Dictionary<string, object>
+                {
+                    { "account_name", "Coordinate" },
+                    { "passwd", "123456" },
+                    { "register_time", now }
+                }
+            };
+            bool result = databaseDriver.Insert("account", account);
+            Console.WriteLine(databaseDriver.LastError);
+            Assert.IsTrue(result);
         }
     }
 }

@@ -8,17 +8,17 @@ using irrigation_dispatching.Config;
 
 namespace irrigation_dispatching.Model
 {
-    abstract class Model
+    public abstract class Model
     {
-        private DatabaseDriver databaseDriver;
-        private string tableName;
+        protected DatabaseDriver databaseDriver;
+        protected string tableName;
         public Model(ref DatabaseDriver databaseDriver)
         {
             this.databaseDriver = databaseDriver;
             SetTable();
         }
 
-        protected abstract void SetTable();
+        public abstract void SetTable();
 
         public Boolean InsertEntry(Dictionary<string, object> entry)
         {

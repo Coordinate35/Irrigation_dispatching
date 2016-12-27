@@ -14,11 +14,12 @@ USE irrigation_dispatching;
 GO
 
 CREATE TABLE dbo.account(
-    account_id SMALLINT NOT NULL PRIMARY KEY IDENTITY(1, 1), --用户的id
-    account_name NVARCHAR(50) NOT NULL,                      --用户的真实姓名
-    passwd VARCHAR(255) NOT NULL,                          --用户密码的哈希
-    register_time INT NOT NULL,                              --用户注册的时间戳
-    available BIT NOT NULL DEFAULT(1)                        --用户是否还存在
+    account_id SMALLINT NOT NULL PRIMARY KEY IDENTITY(1, 1), --账号的id
+    account_name NVARCHAR(50) NOT NULL,                      --账号的真实姓名
+    passwd VARCHAR(255) NOT NULL,                            --账号密码的哈希
+    register_time INT NOT NULL,                              --账号注册的时间戳
+    privilege INT NOT NULL DEFAULT(1),                       --账号的权限，0代表管理员，1代表用户
+    available BIT NOT NULL DEFAULT(1)                        --账号是否还存在
 );
 GO
 
@@ -65,7 +66,7 @@ CREATE TABLE dbo.irrigation_area(
 GO
 
 CREATE TABLE dbo.irrigation_method(
-    method_id INT NOT NULL PRIMARY KEY IDENTITY(1, 1), --灌水方法的id
+    method_id INT NOT NULL PRIMARY KEY IDENTITY(1, 1),      --灌水方法的id
     crop_id SMALLINT NOT NULL,                              --农作物的id
     method NVARCHAR(10) NOT NULL,                           --灌水方法名
     designed_output_min SMALLINT NOT NULL,                  --计划产量最小值
@@ -100,7 +101,7 @@ CREATE TABLE dbo.irrigation_institution(
 GO
 
 CREATE TABLE dbo.dry_earth(
-    round_order TINYINT NOT NULL,                                --轮次
+    round_order TINYINT NOT NULL,                            --轮次
     area INT NOT NULL,                                       --面积
     available BIT NOT NULL DEFAULT(1),                       --干第是否存在
     FOREIGN KEY (round_order) REFERENCES round_order_info(round_order)
