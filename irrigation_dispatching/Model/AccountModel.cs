@@ -17,5 +17,18 @@ namespace irrigation_dispatching.Model
         {
             tableName = Database.TableAccount;
         }
+
+        public Dictionary<int, Dictionary<string, object>> GetAccountByName(string accountName)
+        {
+            string selectedContent = Database.ItemAccountAccountId.ToString() +
+                ", " + Database.ItemAccountAccountName.ToString() +
+                ", " + Database.ItemAccountPasswd.ToString() +
+                ", " + Database.ItemAccountRegisterTime.ToString();
+            databaseDriver.SetSelect(selectedContent);
+            databaseDriver.SetFrom(tableName);
+            databaseDriver.SetAndWhere(Database.ItemAccountAccountName, accountName);
+            Dictionary<int, Dictionary<string, object>> account = databaseDriver.Get();
+            return account;
+        }
     }
 }

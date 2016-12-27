@@ -51,6 +51,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="Controller\AccountControllerTests.cs" />
     <Compile Include="Core\DatabaseDriverTests.cs" />
     <Compile Include="Model\AccountModelTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

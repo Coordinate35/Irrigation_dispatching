@@ -41,5 +41,41 @@ namespace irrigation_dispatching.Model.Tests
         public void SetTableTest()
         {
         }
+
+        [TestMethod()]
+        public void GetAccountByNameTest()
+        {
+            DatabaseDriver databaseDriver = new DatabaseDriver(
+                Database.DataSource,
+                Database.InitialCatalog,
+                Database.UserId,
+                Database.Pwd,
+                Database.PersistSecurityInfo
+            );
+            databaseDriver.Connect();
+            AccountModel accountModel = new AccountModel(ref databaseDriver);
+
+            Dictionary<int, Dictionary<string, object>> account = accountModel.GetAccountByName("Coordinate35");
+            Console.WriteLine(databaseDriver.LastQuery);
+            bool hasContent = account.Count > 0;
+            Assert.IsTrue(hasContent);
+        }
+
+        public void GetAccountByNameTest1()
+        {
+            DatabaseDriver databaseDriver = new DatabaseDriver(
+                Database.DataSource,
+                Database.InitialCatalog,
+                Database.UserId,
+                Database.Pwd,
+                Database.PersistSecurityInfo
+            );
+            databaseDriver.Connect();
+            AccountModel accountModel = new AccountModel(ref databaseDriver);
+
+            Dictionary<int, Dictionary<string, object>> account = accountModel.GetAccountByName("ABC");
+            bool hasContent = account.Count > 0;
+            Assert.IsFalse(hasContent);
+        }
     }
 }

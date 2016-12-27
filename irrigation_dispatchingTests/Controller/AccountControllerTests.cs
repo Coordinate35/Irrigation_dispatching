@@ -1,0 +1,42 @@
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using irrigation_dispatching.Controller;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using irrigation_dispatching.Core;
+using irrigation_dispatching.Config;
+
+namespace irrigation_dispatching.Controller.Tests
+{
+    [TestClass()]
+    public class AccountControllerTests
+    {
+        [TestMethod()]
+        public void AccountControllerTest()
+        {
+        }
+
+        [TestMethod()]
+        public void AddAccountTest()
+        {
+            DatabaseDriver databaseDriver = new DatabaseDriver(
+                Database.DataSource,
+                Database.InitialCatalog,
+                Database.UserId,
+                Database.Pwd,
+                Database.PersistSecurityInfo
+            );
+            databaseDriver.Connect();
+            AccountController accountController = new AccountController(ref databaseDriver);
+            Dictionary<string, string> account = new Dictionary<string, string>()
+            {
+                { "accountName", "matrix67" },
+                { "passwd", "123456" }
+            };
+            int result = accountController.AddAccount(account);
+            Assert.Equals(result, ControllerReturnCode.ACCOUNTADDACCOUNTDUPLICATE);
+        }
+    }
+}

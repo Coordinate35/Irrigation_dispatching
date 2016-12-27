@@ -27,5 +27,11 @@ namespace irrigation_dispatching.Service
             bool result = accountModel.InsertEntry(account);
             return result;
         }
+
+        public Boolean IsAccountExist(string accountName)
+        {
+            Dictionary<int, Dictionary<string, object>> account = accountModel.GetAccountByName(accountName);
+            return 0 < account.Count() ? true : false;
+        }
     }
 }

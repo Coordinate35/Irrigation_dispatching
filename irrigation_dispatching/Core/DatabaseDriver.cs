@@ -131,19 +131,25 @@ namespace irrigation_dispatching.Core
 
         public void SetAndWhere(string key, string value)
         {
+            value = "'" + value + "'";
+            SetAllWhere(key, value);
+        }
+
+        public void SetAndWhere(string key, int value)
+        {
+            string stringValue = value.ToString();
+            SetAllWhere(key, stringValue);
+        }
+
+        private void SetAllWhere(string key, string value)
+        {
             if (null == partialCommand["where"])
             {
                 SetFirstWhere(key, value);
                 return;
             }
             partialCommand["where"] = partialCommand["where"] + " " + key + "=" + value;
-            isQueryChange = true; 
-        }
-
-        public void SetAndWhere(string key, int value)
-        {
-            string stringValue = value.ToString();
-            SetAndWhere(key, stringValue);
+            isQueryChange = true;
         }
 
         private void SetFirstWhere(string key, string value)
@@ -200,6 +206,7 @@ namespace irrigation_dispatching.Core
                 return null;
             }
             Dictionary<int, Dictionary<string, Object>> result = ConverResultToDictionary(resultReader);
+            commandsInCommandGet = InitializeGetCommandList();
             return result;
         }
 
