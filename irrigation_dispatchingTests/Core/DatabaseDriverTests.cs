@@ -121,5 +121,36 @@ namespace irrigation_dispatching.Core.Tests
                 }
             }
         }
+
+        [TestMethod()]
+        public void InsertTest()
+        {
+            DatabaseDriver databaseDriver = new DatabaseDriver(
+               Database.DataSource,
+               Database.InitialCatalog,
+               Database.UserId,
+               Database.Pwd,
+               Database.PersistSecurityInfo
+            );
+            databaseDriver.Connect();
+            DateTime timeStamp = new DateTime(1970, 1, 1);  //得到1970年的时间戳  
+            long now = (DateTime.UtcNow.Ticks - timeStamp.Ticks) / 10000000;
+            Console.WriteLine(now);
+            Dictionary<string, object> account = new Dictionary<string, object>()
+            {
+                { "account_name", "Coordinate35" },
+                { "passwd", "123456" },
+                { "register_time", now }
+            };
+            bool result = databaseDriver.Insert("account", account);
+            Console.WriteLine(databaseDriver.LastQuery);
+            Assert.IsTrue(result);
+        }
+
+        [TestMethod()]
+        public void InsertTest1()
+        {
+            Assert.Fail();
+        }
     }
 }

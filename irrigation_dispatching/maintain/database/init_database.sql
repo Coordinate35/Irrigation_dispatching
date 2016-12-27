@@ -64,20 +64,20 @@ CREATE TABLE dbo.irrigation_area(
 );
 GO
 
-CREATE TABLE dbo.irrigation_institution(
-    institution_id INT NOT NULL PRIMARY KEY IDENTITY(1, 1),  --制度的id
-    crop_id SMALLINT NOT NULL,                               --作物的id
-    irrigation_number TINYINT NOT NULL,                      --灌溉次数
-    round_order TINYINT NOT NULL,                            --轮次
-    quota SMALLINT NOT NULL,                                 --定额
-    stage NVARCHAR(50) NOT NULL,                             --植物生长阶段
-    available BIT NOT NULL DEFAULT(1)
+CREATE TABLE dbo.irrigation_method(
+    method_id INT NOT NULL PRIMARY KEY IDENTITY(1, 1), --灌水方法的id
+    crop_id SMALLINT NOT NULL,                              --农作物的id
+    method NVARCHAR(10) NOT NULL,                           --灌水方法名
+    designed_output_min SMALLINT NOT NULL,                  --计划产量最小值
+    disigned_output_max SMALLINT NOT NULL,                  --计划产量最大值
+    available BIT NOT NULL DEFAULT(1),                      --该方法是否存在
+    FOREIGN KEY (crop_id) REFERENCES crop(crop_id)
+        ON UPDATE CASCADE  
 );
 GO
 
-CREATE TABLE dbo.irrigation_method(
-    method_id INT NOT NULL PRIMARY KEY IDENTITY(1, 1),       --灌溉方式id
-    round_order TINYINT NOT NULL,                            --轮次
+CREATE TABLE dbo.round_order_info(
+    round_order TINYINT NOT NULL PRIMARY KEY IDENTITY(1, 1), --轮次
     season NVARCHAR(10) NOT NULL,                            --季节
     start_time INT NOT NULL,                                 --开始日期的时间戳
     end_time INT NOT NULL,                                   --技术日期的时间戳
@@ -86,10 +86,25 @@ CREATE TABLE dbo.irrigation_method(
 );
 GO
 
+CREATE TABLE dbo.irrigation_institution(
+    institution_id INT NOT NULL PRIMARY KEY IDENTITY(1, 1),  --制度的id
+    crop_id SMALLINT NOT NULL,                               --作物的id
+    irrigation_number TINYINT NOT NULL,                      --灌溉次数
+    round_order TINYINT NOT NULL,                            --轮次
+    quota SMALLINT NOT NULL,                                 --定额
+    stage NVARCHAR(50) NOT NULL,                             --植物生长阶段
+    available BIT NOT NULL DEFAULT(1),
+    FOREIGN KEY (round_order) REFERENCES round_order_info(round_order)
+        ON UPDATE CASCADE
+);
+GO
+
 CREATE TABLE dbo.dry_earth(
-    round_order INT NOT NULL PRIMARY KEY IDENTITY(1, 1),     --轮次
+    round_order TINYINT NOT NULL,                                --轮次
     area INT NOT NULL,                                       --面积
-    available BIT NOT NULL DEFAULT(1)                        --干第是否存在
+    available BIT NOT NULL DEFAULT(1),                       --干第是否存在
+    FOREIGN KEY (round_order) REFERENCES round_order_info(round_order)
+        ON UPDATE CASCADE 
 );
 GO
 
@@ -99,6 +114,8 @@ CREATE TABLE dbo.crop_round_order(
     available BIT NOT NULL DEFAULT(1),                       --作物轮次关系是否存在
     PRIMARY KEY (round_order, crop_id),
     FOREIGN KEY (crop_id) REFERENCES crop(crop_id)
+        ON UPDATE CASCADE,
+    FOREIGN KEY (round_order) REFERENCES round_order_info(round_order)
         ON UPDATE CASCADE
 );
 GO
