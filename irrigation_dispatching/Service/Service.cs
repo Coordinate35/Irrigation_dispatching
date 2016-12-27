@@ -7,7 +7,7 @@ using irrigation_dispatching.Core;
 
 namespace irrigation_dispatching.Service
 {
-    abstract class Service
+    public abstract class Service
     {
         protected DatabaseDriver databaseDriver;
 

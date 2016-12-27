@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 using System.Security.Cryptography;
 using irrigation_dispatching.Config;
 using irrigation_dispatching.Service;
+using irrigation_dispatching.Core;
 
 namespace irrigation_dispatching.controller
 {
     public class Account
     {
-
         public Boolean AddAccount(Dictionary<string, string> UserInfo)
         {
             // To do: Add validation
@@ -24,12 +24,12 @@ namespace irrigation_dispatching.controller
                 Security.PasswdEncryptIterationCount
             );
 
-            AccountService accountService = new AccountService();
+            //AccountService accountService = new AccountService(ref);
 
-            if (false == accountService.AddAccount(userName, passwd))
-            {
-                return false;
-            }
+            //if (false == accountService.AddAccount(userName, passwd))
+            //{
+            //    return false;
+            //}
             return true;
         }
     }

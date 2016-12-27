@@ -9,7 +9,7 @@ using irrigation_dispatching.Core;
 
 namespace irrigation_dispatching.Service
 {
-    class AccountService : Service
+    public class AccountService : Service
     {
         private AccountModel accountModel;
         public AccountService(ref DatabaseDriver databaseDriver) : base (ref databaseDriver)

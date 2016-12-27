@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using irrigation_dispatching.Core;
 using irrigation_dispatching.Config;
+using irrigation_dispatching.Helper;
 
 namespace irrigation_dispatching.Model.Tests
 {
@@ -22,8 +23,18 @@ namespace irrigation_dispatching.Model.Tests
                 Database.UserId,
                 Database.Pwd,
                 Database.PersistSecurityInfo
-           );
-           AccountModel accountModel = new 
+            );
+            databaseDriver.Connect();
+            AccountModel accountModel = new AccountModel(ref databaseDriver);
+            Dictionary<string, object> account = new Dictionary<string, object>()
+            {
+                { "account_name", "Coordinate35" },
+                { "passwd", "123456" },
+                { "register_time", Helper.Helper.time() }
+            };
+            bool result = accountModel.InsertEntry(account);
+            Console.WriteLine(databaseDriver.LastError);
+            Assert.IsTrue(result);
         }
 
         [TestMethod()]
