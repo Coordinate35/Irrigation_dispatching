@@ -36,7 +36,50 @@ namespace irrigation_dispatching.Controller.Tests
                 { "passwd", "123456" }
             };
             int result = accountController.AddAccount(account);
-            Assert.Equals(result, ControllerReturnCode.ACCOUNTADDACCOUNTDUPLICATE);
+            Console.WriteLine(databaseDriver.LastError);
+            Assert.AreEqual(result, ControllerReturnCode.ACCOUNTADDACCOUNTDUPLICATE);
+        }
+
+        [TestMethod()]
+        public void LoginTest()
+        {
+            DatabaseDriver databaseDriver = new DatabaseDriver(
+                Database.DataSource,
+                Database.InitialCatalog,
+                Database.UserId,
+                Database.Pwd,
+                Database.PersistSecurityInfo
+            );
+            databaseDriver.Connect();
+            AccountController accountController = new AccountController(ref databaseDriver);
+            Dictionary<string, string> account = new Dictionary<string, string>()
+            {
+                { "accountName", "matrix67" },
+                { "passwd", "123456" }
+            };
+            Dictionary<string, object> accountInfo = accountController.Login(account);
+            Assert.IsNotNull(accountInfo);
+        }
+
+        [TestMethod()]
+        public void LoginTest1()
+        {
+            DatabaseDriver databaseDriver = new DatabaseDriver(
+                Database.DataSource,
+                Database.InitialCatalog,
+                Database.UserId,
+                Database.Pwd,
+                Database.PersistSecurityInfo
+            );
+            databaseDriver.Connect();
+            AccountController accountController = new AccountController(ref databaseDriver);
+            Dictionary<string, string> account = new Dictionary<string, string>()
+            {
+                { "accountName", "matrix67" },
+                { "passwd", "12345" }
+            };
+            Dictionary<string, object> accountInfo = accountController.Login(account);
+            Assert.IsNull(accountInfo);
         }
     }
 }

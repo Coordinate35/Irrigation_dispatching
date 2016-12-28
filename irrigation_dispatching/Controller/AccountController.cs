@@ -37,5 +37,24 @@ namespace irrigation_dispatching.Controller
             }
             return ControllerReturnCode.ACCOUNTADDACCOUNTSUCCESS;
         }
+
+        public Dictionary<string, object> Login(Dictionary<string, string> UserInfo)
+        {
+            string userName = UserInfo["accountName"];
+            string passwd = UserInfo["passwd"];
+
+            Dictionary<string, object> accountInfo = accountService.GetAccountByName(userName);
+            if (null == accountInfo)
+            {
+                return null;
+            }
+            string hashedPassword = accountInfo["passwd"].ToString();
+            bool isPasswordMatch = BCrypt.Net.BCrypt.Verify(passwd, hashedPassword);
+            if ( ! isPasswordMatch)
+            {
+                return null;
+            }
+            return accountInfo;
+        }
     }
 }

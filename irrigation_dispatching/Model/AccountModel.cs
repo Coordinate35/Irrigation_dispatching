@@ -27,6 +27,7 @@ namespace irrigation_dispatching.Model
             databaseDriver.SetSelect(selectedContent);
             databaseDriver.SetFrom(tableName);
             databaseDriver.SetAndWhere(Database.ItemAccountAccountName, accountName);
+            databaseDriver.SetAndWhere(Database.ItemAccountAvailable, Database.AvailableTrue);
             Dictionary<int, Dictionary<string, object>> account = databaseDriver.Get();
             return account;
         }

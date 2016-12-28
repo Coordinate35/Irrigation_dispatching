@@ -24,11 +24,13 @@ namespace irrigation_dispatching.Config
         public static string TableIrrigationArea = "irrigation_area";
         public static string TableIrrigationInstitution = "irrigation_institution";
         public static string TableIrrigationMethod = "irrigation_method";
+        public static string TableRoundOrderInfo = "round_order_info";
 
         public static string ItemAccountAccountId = "account_id";
         public static string ItemAccountAccountName = "account_name";
         public static string ItemAccountPasswd = "passwd";
         public static string ItemAccountRegisterTime = "register_time";
+        public static string ItemAccountPrivilege = "privilege";
         public static string ItemAccountAvailable = "available";
 
         public static string ItemAdminDeptDeptId = "dept_id";
@@ -77,7 +79,17 @@ namespace irrigation_dispatching.Config
         public static string ItemIrrigationMethodQuata = "quata";
         public static string ItemIrrigationMethodAvailable = "available";
 
-        public static string AvailableTrue = "1";
-        public static string AvailableFalse = "0";
+        public static string ItemRoundOrderInfoRoundOrder = "round_order";
+        public static string ItemRoundOrderInfoSeason = "season";
+        public static string ItemRoundOrderInfoStartTime = "start_time";
+        public static string ItemRoundOrderInfoEndTime = "end_time";
+        public static string ItemRoundOrderInfoQouta = "qouta";
+        public static string ItemRoundOrderInfo = "available";
+
+        public static int AvailableTrue = 1;
+        public static int AvailableFalse = 0;
+
+        public static int AccountPrivilegeAdmin = 0;
+        public static int AccountPrivilegeUser = 1;
     }
 }

@@ -148,7 +148,7 @@ namespace irrigation_dispatching.Core
                 SetFirstWhere(key, value);
                 return;
             }
-            partialCommand["where"] = partialCommand["where"] + " " + key + "=" + value;
+            partialCommand["where"] = partialCommand["where"] + " AND " + key + "=" + value;
             isQueryChange = true;
         }
 
@@ -206,6 +206,7 @@ namespace irrigation_dispatching.Core
                 return null;
             }
             Dictionary<int, Dictionary<string, Object>> result = ConverResultToDictionary(resultReader);
+            resultReader.Close();
             commandsInCommandGet = InitializeGetCommandList();
             return result;
         }
@@ -221,6 +222,7 @@ namespace irrigation_dispatching.Core
                 {
                     result[i].Add(resultReader.GetName(j), resultReader[j]);
                 }
+                i += 1;
             }
             return result;
         }

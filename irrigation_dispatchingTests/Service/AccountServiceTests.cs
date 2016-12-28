@@ -33,5 +33,36 @@ namespace irrigation_dispatching.Service.Tests
             bool result = accountService.AddAccount("Coordinate35", "1234dsfadfas5asdfa");
             Assert.IsTrue(result);
         }
+
+        [TestMethod()]
+        public void GetAccountByNameTest()
+        {
+            DatabaseDriver databaseDriver = new DatabaseDriver(
+                Database.DataSource,
+                Database.InitialCatalog,
+                Database.UserId,
+                Database.Pwd,
+                Database.PersistSecurityInfo
+            );
+            databaseDriver.Connect();
+            AccountService accountService = new AccountService(ref databaseDriver);
+            Dictionary<string, object> account = accountService.GetAccountByName("matrix67");
+            Assert.IsNotNull(account);
+        }
+
+        public void GetAccountByNameTest1()
+        {
+            DatabaseDriver databaseDriver = new DatabaseDriver(
+                Database.DataSource,
+                Database.InitialCatalog,
+                Database.UserId,
+                Database.Pwd,
+                Database.PersistSecurityInfo
+            );
+            databaseDriver.Connect();
+            AccountService accountService = new AccountService(ref databaseDriver);
+            Dictionary<string, object> account = accountService.GetAccountByName("matri");
+            Assert.IsNull(account);
+        }
     }
 }

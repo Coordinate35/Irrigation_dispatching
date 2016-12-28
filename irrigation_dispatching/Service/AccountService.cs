@@ -33,5 +33,15 @@ namespace irrigation_dispatching.Service
             Dictionary<int, Dictionary<string, object>> account = accountModel.GetAccountByName(accountName);
             return 0 < account.Count() ? true : false;
         }
+
+        public Dictionary<string, object> GetAccountByName(string accountName)
+        {
+            Dictionary<int, Dictionary<string, object>> account = accountModel.GetAccountByName(accountName);
+            if (0 < account.Count)
+            {
+                return account[0];
+            }
+            return null;
+        }
     }
 }

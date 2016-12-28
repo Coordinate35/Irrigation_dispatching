@@ -106,8 +106,9 @@ namespace irrigation_dispatching.Core.Tests
                     new Dictionary<string, object>() {
                         { "account_id", (Int16)1 },
                         { "account_name", "Coordinate35" },
-                        { "passwd", "123456" },
-                        { "register_time", 1482827993 },
+                        { "passwd", "1234dsfadfas5asdfa" },
+                        { "register_time", 1482891426 },
+                        { "privilege", 1 },
                         { "available", true }
                     }
                 }

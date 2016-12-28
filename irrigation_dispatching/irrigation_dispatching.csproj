@@ -62,6 +62,7 @@
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
     <Compile Include="Helper\Helper.cs" />
+    <Compile Include="Library\Hydro.cs" />
     <Compile Include="Model\AccountModel.cs" />
     <Compile Include="Model\Model.cs" />
     <Compile Include="Program.cs" />
@@ -96,7 +97,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Library\" />
     <Folder Include="Maintain\database\" />
     <Folder Include="View\" />
   </ItemGroup>
