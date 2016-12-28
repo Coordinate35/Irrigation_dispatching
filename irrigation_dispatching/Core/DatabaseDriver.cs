@@ -19,6 +19,7 @@ namespace irrigation_dispatching.Core
         private Dictionary<string, string> partialCommand;
         private string[] commandList;
         private Dictionary<string, bool> commandsInCommandGet;
+        private Dictionary<string, bool> commandsInCommandUpdate;
         private string error;
         private string lastQuery;
         private SqlCommand command;
@@ -34,6 +35,7 @@ namespace irrigation_dispatching.Core
 
             partialCommand = InitializePartialCommand();
             commandsInCommandGet = InitializeGetCommandList();
+            commandsInCommandUpdate = InitializeUpdateCommandList();
         }
 
         public string ConnectString
@@ -63,7 +65,7 @@ namespace irrigation_dispatching.Core
         private Dictionary<string, string> InitializePartialCommand()
         {
             Dictionary<string, string> commands = new Dictionary<string, string>();
-            commandList = new string[] { "select", "from", "where", "orderBy" };
+            commandList = new string[] { "select", "from", "where", "orderBy", "update", "set" };
             foreach (string commandName in commandList)
             {
                 commands.Add(commandName, null);
@@ -79,6 +81,17 @@ namespace irrigation_dispatching.Core
             commandList.Add("from", true);
             commandList.Add("where", false);
             commandList.Add("orderBy", false);
+            return commandList;
+        }
+
+        private Dictionary<string, bool> InitializeUpdateCommandList()
+        {
+            Dictionary<string, bool> commandList = new Dictionary<string, bool>()
+            {
+                { "update", true },
+                { "set", true },
+                { "where", false }
+            };
             return commandList;
         }
 
@@ -163,19 +176,57 @@ namespace irrigation_dispatching.Core
             isQueryChange = true;
         }
 
-        private bool GenerateGetQuery()
+        public void SetUpdate(string tableName)
+        {
+            partialCommand["update"] = "UPDATE " + tableName;
+            isQueryChange = true;
+        }
+
+        public void SetSet(Dictionary<string, object> items)
+        {
+            partialCommand["set"] = null;
+            foreach (KeyValuePair<string, object> item in items)
+            {
+                if (null == partialCommand["set"])
+                {
+                    if (item.Value.GetType() == typeof(String))
+                    {
+                        partialCommand["set"] = "SET " + item.Key + " = '" + item.Value + "'";
+                    }
+                    else
+                    {
+                        partialCommand["set"] = "Set " + item.Key + " = " + item.Value.ToString();
+                    }
+                }
+                else
+                {
+                    if (item.Value.GetType() == typeof(String))
+                    {
+                        partialCommand["set"] += ", " + item.Key + " = '" + item.Value + "'";
+                    }
+                    else
+                    {
+                        partialCommand["set"] += ", " + item.Key + " = " + item.Value.ToString();
+                    }
+                }
+            }
+            isQueryChange = true;
+        }
+
+        private bool GenerateQuery(Dictionary<string, bool> neededPartialCommands)
         {
             if (false == isQueryChange)
             {
                 return true;
             }
             lastQuery = null;
-            foreach (KeyValuePair<string, bool> singleCommand in commandsInCommandGet)
+            foreach (KeyValuePair<string, bool> singleCommand in neededPartialCommands)
             {
                 if ((true == singleCommand.Value) && (null == partialCommand[singleCommand.Key]))
                 {
                     return false;
                 }
+                
                 if (null == lastQuery)
                 {
                     lastQuery = partialCommand[singleCommand.Key];
@@ -187,6 +238,26 @@ namespace irrigation_dispatching.Core
             }
             isQueryChange = false;
             return true;
+        }
+
+        private bool GenerateUpdateQuery()
+        {
+            return GenerateQuery(commandsInCommandUpdate);
+        }
+
+        public bool Update()
+        {
+            if (false == GenerateUpdateQuery())
+            {
+                return false;
+            }
+
+            return ExecuteNonQuery();
+        }
+
+        private bool GenerateGetQuery()
+        {
+            return GenerateQuery(commandsInCommandGet);
         }
 
         public Dictionary<int, Dictionary<string, Object>> Get()

@@ -182,5 +182,29 @@ namespace irrigation_dispatching.Core.Tests
             Console.WriteLine(databaseDriver.LastError);
             Assert.IsTrue(result);
         }
+
+        [TestMethod()]
+        public void UpdateTest()
+        {
+            DatabaseDriver databaseDriver = new DatabaseDriver(
+                Database.DataSource,
+                Database.InitialCatalog,
+                Database.UserId,
+                Database.Pwd,
+                Database.PersistSecurityInfo
+            );
+            databaseDriver.Connect();
+            Dictionary<string, object> account = new Dictionary<string, object>()
+            {
+                { "account_name", "Coordinate35" },
+                { "passwd", "13579" }
+            };
+            databaseDriver.SetUpdate(Database.TableAccount);
+            databaseDriver.SetSet(account);
+            databaseDriver.SetAndWhere("account_id", 2);
+            bool result = databaseDriver.Update();
+            Console.WriteLine(databaseDriver.LastQuery);
+            Assert.IsTrue(result);
+        }
     }
 }
