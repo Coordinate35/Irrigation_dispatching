@@ -87,19 +87,6 @@ CREATE TABLE dbo.round_order_info(
 );
 GO
 
-CREATE TABLE dbo.irrigation_institution(
-    institution_id INT NOT NULL PRIMARY KEY IDENTITY(1, 1),  --制度的id
-    crop_id SMALLINT NOT NULL,                               --作物的id
-    irrigation_number TINYINT NOT NULL,                      --灌溉次数
-    round_order TINYINT NOT NULL,                            --轮次
-    quota SMALLINT NOT NULL,                                 --定额
-    stage NVARCHAR(50) NOT NULL,                             --植物生长阶段
-    available BIT NOT NULL DEFAULT(1),
-    FOREIGN KEY (round_order) REFERENCES round_order_info(round_order)
-        ON UPDATE CASCADE
-);
-GO
-
 CREATE TABLE dbo.dry_earth(
     round_order TINYINT NOT NULL,                            --轮次
     area INT NOT NULL,                                       --面积
@@ -109,11 +96,12 @@ CREATE TABLE dbo.dry_earth(
 );
 GO
 
-CREATE TABLE dbo.crop_round_order(
+CREATE TABLE dbo.irrigation_institution(
+    institution_id INT NOT NULL PRIMARY KEY IDENTITY(1, 1),  --制度的id
     round_order TINYINT NOT NULL,                            --轮次
     crop_id SMALLINT NOT NULL,                               --作物的id
     available BIT NOT NULL DEFAULT(1),                       --作物轮次关系是否存在
-    PRIMARY KEY (round_order, crop_id),
+    stage NVARCHAR(50),                                      --植物生长阶段
     FOREIGN KEY (crop_id) REFERENCES crop(crop_id)
         ON UPDATE CASCADE,
     FOREIGN KEY (round_order) REFERENCES round_order_info(round_order)

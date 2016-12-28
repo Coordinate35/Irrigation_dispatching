@@ -8,6 +8,7 @@ namespace irrigation_dispatching.Library
 {
     public class Hydro
     {
-    
+        private Dictionary<string, int> cropArea;
+
     }
 }
