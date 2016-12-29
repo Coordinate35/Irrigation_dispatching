@@ -12,30 +12,30 @@ namespace irrigation_dispatching.Library
         private List<int> dryEarth;
         private List<Dictionary<string, int>> irrigationInstitution;
         private List<Dictionary<string, int>> roundOrderInfo;
-        private List<Dictionary<string, int>> inflow;
+        private List<Dictionary<string, double>> inflow;
 
         private Dictionary<int, int> cropArea;
         private List<int> roundOrderArea;
         private List<int> originalIrrigationRequirement;
-        private List<float> grossIrrigationRequirement;
+        private List<double> grossIrrigationRequirement;
         private List<int> roundIrrigationDayNumber;
-        private List<float> averageWaterSupplyOfCanalHead;
-        private List<float> waterRequirement;
-        private List<float> averageFlow;
-        private List<float> inflowAveragePrediction;
-        private List<float> utilizableCapacity;
+        private List<double> averageWaterSupplyOfCanalHead;
+        private List<double> waterRequirement;
+        private List<double> averageFlow;
+        private List<double> inflowAveragePrediction;
+        private List<double> utilizableCapacity;
 
-        private int grossIrrigationConst;
-        private int averageWaterSupplyOfCanalHeadConst;
-        private int waterRequirementConst;
-        private int basicUtilizableCapacity;
-        private int averageFlowConst;
+        private double grossIrrigationConst;
+        private double averageWaterSupplyOfCanalHeadConst;
+        private double waterRequirementConst;
+        private double basicUtilizableCapacity;
+        private double averageFlowConst;
         private int daySeconds = 86400;
         private int roundDays = 10;
         private int roundPerMonth = 3;
         private int inflowExpandTimes = 100;
 
-        private void CalculateCropArea(int grossIrrigationConst, int averageWaterSupplyOfCanalHeadConst, int waterRequirementConst, int basicUtilizableCapacity)
+        public Hydro(double grossIrrigationConst, double averageWaterSupplyOfCanalHeadConst, double waterRequirementConst, double basicUtilizableCapacity)
         {
             this.grossIrrigationConst = grossIrrigationConst;
             this.averageWaterSupplyOfCanalHeadConst = averageWaterSupplyOfCanalHeadConst;
@@ -44,7 +44,7 @@ namespace irrigation_dispatching.Library
             averageFlowConst = averageWaterSupplyOfCanalHeadConst;
         }
 
-        public List<Dictionary<string, int>> Inflow
+        public List<Dictionary<string, double>> Inflow
         {
             set
             {
@@ -143,7 +143,7 @@ namespace irrigation_dispatching.Library
 
         public void CalculateGrossIrrigationRequirement()
         {
-            List<float> tempGrossIrrigationRequirement = new List<float>();
+            List<double> tempGrossIrrigationRequirement = new List<double>();
             for (int i = 0; i < roundOrderInfo.Count; i++)
             {
                 tempGrossIrrigationRequirement.Insert(i, originalIrrigationRequirement[i] / grossIrrigationConst);
@@ -153,7 +153,7 @@ namespace irrigation_dispatching.Library
 
         public void CalculateAverageWaterSupplyOfCanalHead()
         {
-            List<float> tempAverageWaterSupplyOfCanalHead = new List<float>();
+            List<double> tempAverageWaterSupplyOfCanalHead = new List<double>();
             for (int i = 0; i < roundOrderInfo.Count; i++)
             {
                 tempAverageWaterSupplyOfCanalHead.Insert(i, grossIrrigationRequirement[i] / roundIrrigationDayNumber[i] / averageWaterSupplyOfCanalHeadConst);
@@ -163,7 +163,7 @@ namespace irrigation_dispatching.Library
 
         public void CalculateWaterRequirement()
         {
-            List<float> tempWaterRequirement = new List<float>();
+            List<double> tempWaterRequirement = new List<double>();
             for (int i = 0; i < roundOrderInfo.Count; i++)
             {
                 tempWaterRequirement.Insert(i, grossIrrigationRequirement[i] / waterRequirementConst);
@@ -173,7 +173,7 @@ namespace irrigation_dispatching.Library
 
         public void CalculateAverageFlow()
         {
-            List<float> tempAverageFlow = new List<float>();
+            List<double> tempAverageFlow = new List<double>();
             for (int i = 0; i < roundOrderInfo.Count; i++)
             {
                 tempAverageFlow.Insert(i, averageWaterSupplyOfCanalHead[i] / roundIrrigationDayNumber[i] / averageFlowConst);
@@ -183,7 +183,7 @@ namespace irrigation_dispatching.Library
 
         public void CalculateInflowAveragePrediction()
         {
-            List<float> tempInflowAveragePrediction = new List<float>();
+            List<double> tempInflowAveragePrediction = new List<double>();
             for (int i = 0; i < roundOrderInfo.Count; i++)
             {
                 Dictionary<string, int> time = null;
@@ -193,11 +193,11 @@ namespace irrigation_dispatching.Library
                 time = getDate(roundOrderInfo[i]["end_time"]);
                 int endMonth = time["month"];
                 int endDay = time["day"];
-                tempInflowAveragePrediction.Insert(i, (1 - (float)(startDay % roundDays) / (float)roundDays) * inflow[startMonth * roundPerMonth + startDay / roundDays + 1]["average_flow"] / inflowExpandTimes);
-                tempInflowAveragePrediction[i] += (float)(endDay % roundDays) / (float)roundDays * inflow[endMonth * roundPerMonth + endDay / roundDays + 1]["average_flow"] / inflowExpandTimes;
+                tempInflowAveragePrediction.Insert(i, (1 - (double)(startDay % roundDays) / (double)roundDays) * inflow[startMonth * roundPerMonth + startDay / roundDays + 1]["average_flow"] / inflowExpandTimes);
+                tempInflowAveragePrediction[i] += (double)(endDay % roundDays) / (double)roundDays * inflow[endMonth * roundPerMonth + endDay / roundDays + 1]["average_flow"] / inflowExpandTimes;
                 for (int j = startMonth * roundPerMonth + startDay / roundDays + 2; j <= endMonth * roundPerMonth + endDay / roundDays; j++)
                 {
-                    tempInflowAveragePrediction[i] += (float)inflow[j]["average_flow"] / inflowExpandTimes;
+                    tempInflowAveragePrediction[i] += (double)inflow[j]["average_flow"] / inflowExpandTimes;
                 }
                 tempInflowAveragePrediction[i] = tempInflowAveragePrediction[i] * averageFlowConst * roundDays;
             }
@@ -220,7 +220,7 @@ namespace irrigation_dispatching.Library
 
         public void CalculateUtilizableCapacity()
         {
-            List<float> tempUtilizableCapacity = new List<float>();
+            List<double> tempUtilizableCapacity = new List<double>();
             tempUtilizableCapacity.Insert(0, basicUtilizableCapacity);
             for (int i = 1; i < roundOrderInfo.Count; i++)
             {

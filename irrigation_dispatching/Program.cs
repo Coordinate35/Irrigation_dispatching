@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Data.SqlClient;
 using System.Data;
+using irrigation_dispatching.View;
 
 namespace irrigation_dispatching
 {
@@ -18,7 +19,7 @@ namespace irrigation_dispatching
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Form1());
+            Application.Run(new Index());
         }
     }
 }
