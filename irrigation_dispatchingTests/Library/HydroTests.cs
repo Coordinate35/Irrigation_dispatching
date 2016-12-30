@@ -293,7 +293,22 @@ namespace irrigation_dispatching.Library.Tests
         [TestMethod()]
         public void CalculateUtilizableCapacityTest()
         {
-            Assert.Fail();
+            Hydro hydroCalculator = InitHydro();
+            hydroCalculator.CalculateRoundOrderArea();
+            hydroCalculator.CalculateOriginalIrrigationRequirement();
+            hydroCalculator.CalculateGrossIrrigationRequirement();
+            hydroCalculator.CalculateAverageWaterSupplyOfCanalHead();
+            hydroCalculator.CalculateAverageFlow();
+            hydroCalculator.CalculateWaterRequirement();
+            hydroCalculator.CalculateInflowAveragePrediction();
+            hydroCalculator.CalculateUtilizableCapacity();
+            List<double> testCase = new List<double>() { 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+            for (int i = 0; i < hydroCalculator.InflowAveragePrediction.Count; i++)
+            {
+                double restWater = (0 == i ? 18956.8062545455 : testCase[i - 1]);
+                testCase[i] = restWater + hydroCalculator.InflowAveragePrediction[i] - hydroCalculator.WaterRequirement[i];
+            }
+            Assert.IsTrue(IsListEqual(testCase, hydroCalculator.UtilizableCapacity));
         }
     }
 }

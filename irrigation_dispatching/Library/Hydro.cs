@@ -304,10 +304,10 @@ namespace irrigation_dispatching.Library
         public void CalculateUtilizableCapacity()
         {
             List<double> tempUtilizableCapacity = new List<double>();
-            tempUtilizableCapacity.Insert(0, basicUtilizableCapacity);
-            for (int i = 1; i < roundOrderInfo.Count; i++)
+            for (int i = 0; i < roundOrderInfo.Count; i++)
             {
-                tempUtilizableCapacity.Insert(i, tempUtilizableCapacity[i - 1] + inflowAveragePrediction[i] - waterRequirement[i]);
+                double restWater = (0 == i ? basicUtilizableCapacity : tempUtilizableCapacity[i - 1]);
+                tempUtilizableCapacity.Insert(i, restWater + inflowAveragePrediction[i] - waterRequirement[i]);
             }
             utilizableCapacity = tempUtilizableCapacity;
         }
