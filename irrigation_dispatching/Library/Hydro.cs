@@ -34,6 +34,8 @@ namespace irrigation_dispatching.Library
         private int roundDays = 10;
         private int roundPerMonth = 3;
         private int inflowExpandTimes = 100;
+        private int maxMonthDayNumber = 31;
+        private int idealMaxDayNumber = 30;
 
         public Hydro(double grossIrrigationConst, double averageWaterSupplyOfCanalHeadConst, double waterRequirementConst, double basicUtilizableCapacity)
         {
@@ -42,6 +44,78 @@ namespace irrigation_dispatching.Library
             this.waterRequirementConst = waterRequirementConst;
             this.basicUtilizableCapacity = basicUtilizableCapacity;
             averageFlowConst = averageWaterSupplyOfCanalHeadConst;
+        }
+
+        public List<int> RoundOrderArea
+        {
+            get
+            {
+                return roundOrderArea;
+            }
+        }
+
+        public List<int> OriginalIrrigationRequirement
+        {
+            get
+            {
+                return originalIrrigationRequirement;
+            }
+        }
+
+        public List<double> GrossIrrigationRequirement
+        {
+            get
+            {
+                return grossIrrigationRequirement;
+            }
+        }
+
+        public List<int> RoundIrrigationDayNumber
+        {
+            get
+            {
+                return RoundIrrigationDayNumber;
+            }
+        }
+
+        public List<double> AverageWaterSupplyOfCanalHead
+        {
+            get
+            {
+                return averageWaterSupplyOfCanalHead;
+            }
+        }
+
+        public List<double> WaterRequirement
+        {
+            get
+            {
+                return waterRequirement;
+            }
+        }
+
+        public List<double> AverageFlow
+        {
+            get
+            {
+                return averageFlow;
+            }
+        }
+
+        public List<double> InflowAveragePrediction
+        {
+            get
+            {
+                return inflowAveragePrediction;
+            }
+        }
+
+        public List<double> UtilizableCapacity
+        {
+            get
+            {
+                return utilizableCapacity;
+            }
         }
 
         public List<Dictionary<string, double>> Inflow
@@ -122,7 +196,7 @@ namespace irrigation_dispatching.Library
             }
             foreach (Dictionary<string, int> rule in irrigationInstitution)
             {
-                tempRoundOrderArea[rule["round_order"]] += cropArea[rule["crop_id"]];
+                tempRoundOrderArea[rule["round_order"] - 1] += cropArea[rule["crop_id"]];
             }
             for (int i = 0; i < roundOrderInfo.Count; i++)
             {
@@ -184,20 +258,28 @@ namespace irrigation_dispatching.Library
         public void CalculateInflowAveragePrediction()
         {
             List<double> tempInflowAveragePrediction = new List<double>();
+            int lastEndRound = -1;
+            int lastEndDay = roundDays;
+            Dictionary<string, int> time = null;
             for (int i = 0; i < roundOrderInfo.Count; i++)
-            {
-                Dictionary<string, int> time = null;
-                time = getDate(roundOrderInfo[i]["start_time"]);
-                int startMonth = time["month"];
-                int startDay = time["day"];
+            {              
                 time = getDate(roundOrderInfo[i]["end_time"]);
-                int endMonth = time["month"];
-                int endDay = time["day"];
-                tempInflowAveragePrediction.Insert(i, (1 - (double)(startDay % roundDays) / (double)roundDays) * inflow[startMonth * roundPerMonth + startDay / roundDays + 1]["average_flow"] / inflowExpandTimes);
-                tempInflowAveragePrediction[i] += (double)(endDay % roundDays) / (double)roundDays * inflow[endMonth * roundPerMonth + endDay / roundDays + 1]["average_flow"] / inflowExpandTimes;
-                for (int j = startMonth * roundPerMonth + startDay / roundDays + 2; j <= endMonth * roundPerMonth + endDay / roundDays; j++)
+                if (maxMonthDayNumber == time["day"])
                 {
-                    tempInflowAveragePrediction[i] += (double)inflow[j]["average_flow"] / inflowExpandTimes;
+                    time["day"] = idealMaxDayNumber;
+                }
+                int endRound = (time["month"] - 1) * roundPerMonth + (0 == time["day"] % roundDays ? time["day"] / roundDays - 1 : time["day"] / roundDays) + 1 - 1;
+                int endDay = (0 == time["day"] % roundDays) ? roundDays : time["day"] % roundDays;
+                int startRound = (roundDays == lastEndDay ? lastEndRound + 1 : lastEndRound);
+                int startDay = (roundDays == lastEndDay ? 1 : lastEndDay + 1);
+                lastEndRound = endRound;
+                lastEndDay = endDay;
+                tempInflowAveragePrediction.Insert(i, 0);
+                tempInflowAveragePrediction[i] += (1 - Convert.ToDouble(startDay - 1) / Convert.ToDouble(roundDays)) * inflow[startRound]["average_flow"];
+                tempInflowAveragePrediction[i] += Convert.ToDouble(endDay) / Convert.ToDouble(roundDays) * inflow[endRound]["average_flow"];
+                for (int j = startRound + 1; j < endRound; j++)
+                {
+                    tempInflowAveragePrediction[i] += inflow[j]["average_flow"];
                 }
                 tempInflowAveragePrediction[i] = tempInflowAveragePrediction[i] * averageFlowConst * roundDays;
             }
@@ -206,8 +288,9 @@ namespace irrigation_dispatching.Library
 
         private Dictionary<string, int> getDate(int timeStamp)
         {
+            Int64 eightHoursSecond = 28800;
             DateTime baseStamp = new DateTime(1970, 1, 1);
-            Int64 totalTicks = timeStamp * 10000000 + baseStamp.Ticks;
+            Int64 totalTicks = (Convert.ToInt64(timeStamp) + eightHoursSecond) * 10000000 + baseStamp.Ticks;
             DateTime targetTime = new DateTime(totalTicks);
 
             Dictionary<string, int> result = new Dictionary<string, int>()

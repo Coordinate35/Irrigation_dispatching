@@ -1,4 +1,5 @@
 ﻿USE irrigation_dispatching;
+
 GO
 
 INSERT INTO irrigation_institution(round_order, crop_id, stage) 
@@ -17,10 +18,14 @@ VALUES
 (4,3,'针叶期'),
 (5,3,'拨节期'),
 (6,3,'抽雄穗期'),
+(7,3,'撒粉期'),
+(8,3,'灌浆始期 黄熟期'),
 (3,4,null),
 (4,4,null),
 (5,4,null),
 (6,4,null),
+(7,4,null),
+(8,4,null),
 (3,5,'幼苗期'),
 (4,5,'分枝期'),
 (5,5,'开花结果期'),
@@ -60,10 +65,10 @@ VALUES
 (7,11,null),
 (8,11,null),
 (2,12,null),
+(3,12,null),
+(4,12,null),
 (5,12,null),
 (6,12,null),
-(3,13,null),
-(4,13,null),
 (5,13,'现蕾期'),
 (6,13,'花铃期'),
 (7,13,'吐絮期'),
@@ -79,4 +84,5 @@ VALUES
 (8,15,null),
 (1,16,null),
 (9,16,null);
-GO
+
+GO 
