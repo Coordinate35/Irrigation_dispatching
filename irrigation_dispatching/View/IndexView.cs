@@ -10,9 +10,9 @@ using System.Windows.Forms;
 
 namespace irrigation_dispatching.View
 {
-    public partial class Index : Form
+    public partial class IndexView : Form
     {
-        public Index()
+        public IndexView()
         {
             InitializeComponent();
         }

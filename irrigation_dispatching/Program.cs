@@ -3,9 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Data.SqlClient;
-using System.Data;
-using irrigation_dispatching.View;
+using irrigation_dispatching.Controller;
 
 namespace irrigation_dispatching
 {
@@ -17,9 +15,10 @@ namespace irrigation_dispatching
         [STAThread]
         static void Main()
         {
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Index());
+            //Application.EnableVisualStyles();
+            //Application.SetCompatibleTextRenderingDefault(false);
+            //Application.Run();
+            NavigationController navigationController = new NavigationController();
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿namespace irrigation_dispatching.View
 {
-    partial class Index
+    partial class IndexView
     {
         /// <summary>
         /// Required designer variable.

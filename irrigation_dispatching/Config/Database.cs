@@ -9,7 +9,7 @@ namespace irrigation_dispatching.Config
     public static class Database
     {
         public static string DataSource = "DESKTOP-23E4P5O";
-        public static string InitialCatalog = "irrigation_dispatching";
+        public static string InitialCatalog = "irrigationdispatching";
         public static string PersistSecurityInfo = "True";
         public static string UserId = "irrigation_dispatching";
         public static string Pwd = "Irrigationdispatching";
