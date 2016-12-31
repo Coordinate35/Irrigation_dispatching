@@ -31,5 +31,19 @@ namespace irrigation_dispatching.Model
             Dictionary<int, Dictionary<string, object>> account = databaseDriver.Get();
             return account;
         }
+
+        public Dictionary<int, Dictionary<string, object>> GetAllAmin()
+        {
+            string selectedContent = Database.ItemAccountAccountId.ToString() +
+                ", " + Database.ItemAccountAccountName.ToString() +
+                ", " + Database.ItemAccountPasswd.ToString() +
+                ", " + Database.ItemAccountRegisterTime.ToString();
+            databaseDriver.SetSelect(selectedContent);
+            databaseDriver.SetFrom(tableName);
+            databaseDriver.SetAndWhere(Database.ItemAccountAvailable, Database.AvailableTrue);
+            databaseDriver.SetAndWhere(Database.ItemAccountPrivilege, Database.AccountPrivilegeAdmin);
+            Dictionary<int, Dictionary<string, object>> account = databaseDriver.Get();
+            return account;
+        }
     }
 }

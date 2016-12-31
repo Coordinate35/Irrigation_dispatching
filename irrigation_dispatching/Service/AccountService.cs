@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using irrigation_dispatching.Model;
 using irrigation_dispatching.Helper;
 using irrigation_dispatching.Core;
+using irrigation_dispatching.Config;
 
 namespace irrigation_dispatching.Service
 {
@@ -16,12 +17,13 @@ namespace irrigation_dispatching.Service
         {
             accountModel = new AccountModel(ref databaseDriver);
         }
-        public Boolean AddAccount(string userName, string passwd)
+        public Boolean AddAccount(string userName, string passwd, int privilege)
         {
             Dictionary<string, object> account = new Dictionary<string, object>()
             {
                 { "account_name", userName },
                 { "passwd", passwd },
+                { "privilege", privilege },
                 { "register_time", Helper.Helper.time() }
             };
             bool result = accountModel.InsertEntry(account);
@@ -42,6 +44,16 @@ namespace irrigation_dispatching.Service
                 return account[0];
             }
             return null;
+        }
+
+        public bool IsAdminExists()
+        {
+            Dictionary<int, Dictionary<string, object>> account = accountModel.GetAllAmin();
+            if (0 >= account.Count)
+            {
+                return false;
+            }
+            return true;
         }
     }
 }

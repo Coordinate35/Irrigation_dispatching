@@ -8,8 +8,8 @@ namespace irrigation_dispatching.Config
 {
     public static class ControllerReturnCode
     {
-        public static int ACCOUNTADDACCOUNTSUCCESS = 0;
-        public static int ACCOUNTADDACCOUNTERROR = 1;
-        public static int ACCOUNTADDACCOUNTDUPLICATE = 2;
+        public const int ACCOUNTADDACCOUNTSUCCESS = 0;
+        public const int ACCOUNTADDACCOUNTERROR = 1;
+        public const int ACCOUNTADDACCOUNTDUPLICATE = 2;
     }
 }

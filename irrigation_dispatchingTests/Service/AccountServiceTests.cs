@@ -30,7 +30,7 @@ namespace irrigation_dispatching.Service.Tests
             );
             databaseDriver.Connect();
             AccountService accountService = new AccountService(ref databaseDriver);
-            bool result = accountService.AddAccount("Coordinate35", "1234dsfadfas5asdfa");
+            bool result = accountService.AddAccount("Coordinate35", "1234dsfadfas5asdfa", Database.AccountPrivilegeAdmin);
             Assert.IsTrue(result);
         }
 

@@ -23,6 +23,7 @@ namespace irrigation_dispatching.Controller
             // To do: Add validation
             string userName = UserInfo["accountName"];
             string passwd = UserInfo["passwd"];
+            int privilege = UserInfo.ContainsKey("privilege") ? Convert.ToInt32(UserInfo["privilege"]) : Database.AccountPrivilegeUser;
             string hashedPasswd = BCrypt.Net.BCrypt.HashPassword(passwd);
 
             bool isAccountExist = accountService.IsAccountExist(userName);
@@ -30,7 +31,7 @@ namespace irrigation_dispatching.Controller
             {
                 return ControllerReturnCode.ACCOUNTADDACCOUNTDUPLICATE;
             }
-            bool result = accountService.AddAccount(userName, hashedPasswd);
+            bool result = accountService.AddAccount(userName, hashedPasswd, privilege);
             if ( ! result)
             {
                 return ControllerReturnCode.ACCOUNTADDACCOUNTERROR;
@@ -55,6 +56,11 @@ namespace irrigation_dispatching.Controller
                 return null;
             }
             return accountInfo;
+        }
+
+        public bool IsAdminExists()
+        {
+            return accountService.IsAdminExists();
         }
     }
 }
