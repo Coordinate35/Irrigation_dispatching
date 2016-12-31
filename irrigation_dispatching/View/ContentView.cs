@@ -8,18 +8,13 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace irrigation_dispatching
+namespace irrigation_dispatching.View
 {
-    public partial class Form1 : Form
+    public partial class ContentView : Form
     {
-        public Form1()
+        public ContentView()
         {
             InitializeComponent();
-        }
-
-        private void Form1_Load(object sender, EventArgs e)
-        {
-
         }
     }
 }

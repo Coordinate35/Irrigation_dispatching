@@ -17,6 +17,7 @@ namespace irrigation_dispatching.Controller
         private Dictionary<string, Controller> controllers;
         private DatabaseDriver databaseDriver;
         private string lastError;
+        private Dictionary<string, object> userInfo;
 
         public NavigationController(string databaseDriverName = "DatabaseDriver")
         {
@@ -72,8 +73,43 @@ namespace irrigation_dispatching.Controller
                 }
                 FreeViewByName("setAdminView");
                 IndexView indexView = (IndexView)GetViewByName("indexView");
+                indexView.Login += IndexView_Login;
                 indexView.ShowDialog();
             }
+        }
+
+        private void IndexView_Login(object sender, EventArgs e)
+        {
+            if (e is LoginEventArgs)
+            {
+                LoginEventArgs loginEventArgs = e as LoginEventArgs;
+                Dictionary<string, string> loginAccountInfo = new Dictionary<string, string>()
+                {
+                    { "accountName", loginEventArgs.AccountName },
+                    { "passwd", loginEventArgs.Passwd }
+                };
+                AccountController accountController = (AccountController)GetControllerByName("accountController");
+                Dictionary<string, object> accountInfo = accountController.Login(loginAccountInfo);
+                if (null == accountInfo)
+                {
+                    lastError = ErrorMessage.AccountNamePasswdNotMatch;
+                    int errorLevel = ErrorLevel.ErrorLevelWarning;
+                    ErrorMessageView errorMessageView = new ErrorMessageView(lastError, errorLevel);
+                    errorMessageView.ShowDialog();
+                }
+                else
+                {
+                    userInfo = accountInfo;
+                    FreeViewByName("indexView");
+                    LoadContentView();
+                }
+            }
+        }
+
+        private void LoadContentView()
+        {
+            ContentView contentView = (ContentView)GetViewByName("contentView");
+            contentView.ShowDialog();
         }
 
         private void FreeViewByName(string viewName)
@@ -121,6 +157,10 @@ namespace irrigation_dispatching.Controller
                     SetAdminView setAdminView = new SetAdminView();
                     views.Add(viewName, setAdminView);
                     return views[viewName];
+                case "contentView":
+                    ContentView contentView = new ContentView();
+                    views.Add(viewName, contentView);
+                    return views[viewName];
                 default:
                     return null;
             }
@@ -149,7 +189,7 @@ namespace irrigation_dispatching.Controller
             {
                 return false;
             }
-            if (! databaseDriver.Connect())
+            if ( ! databaseDriver.Connect())
             {
                 lastError = ErrorMessage.ConnectDatabaseError;
                 isSuccess = false;
