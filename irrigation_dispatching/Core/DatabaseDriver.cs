@@ -278,7 +278,7 @@ namespace irrigation_dispatching.Core
             }
             Dictionary<int, Dictionary<string, Object>> result = ConverResultToDictionary(resultReader);
             resultReader.Close();
-            commandsInCommandGet = InitializeGetCommandList();
+            partialCommand = InitializePartialCommand();
             return result;
         }
 

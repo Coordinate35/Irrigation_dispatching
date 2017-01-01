@@ -14,17 +14,32 @@ namespace irrigation_dispatching.Config
         public static string UserId = "irrigation_dispatching";
         public static string Pwd = "Irrigationdispatching";
 
-        public static string TableAccount = "account";
-        public static string TableAdminDept = "admin_dept";
-        public static string TableCrop = "crop";
-        public static string TableCropRoundOrder = "crop_round_order";
-        public static string TableDryEarth = "dry_earth";
-        public static string TableInflowHistory = "inflow_history";
-        public static string TableInflowPrediction = "inflow_prediction";
-        public static string TableIrrigationArea = "irrigation_area";
-        public static string TableIrrigationInstitution = "irrigation_institution";
-        public static string TableIrrigationMethod = "irrigation_method";
-        public static string TableRoundOrderInfo = "round_order_info";
+        public static List<Dictionary<string, object>> TableList = new List<Dictionary<string, object>>()
+        {
+            new Dictionary<string, object>() { { "tableName", "account" }, { "attribute", "账户" }, { "needNotAdmin", false } },
+            new Dictionary<string, object>() { { "tableName", "admin_dept" }, { "attribute", "行政单位" }, { "needNotAdmin", true } },
+            new Dictionary<string, object>() { { "tableName", "crop" }, { "attribute", "农作物" }, { "needNotAdmin", true } },
+            new Dictionary<string, object>() { { "tableName", "crop_round_order" }, { "attribute", "农作物所属灌溉轮次" }, { "needNotAdmin", true } },
+            new Dictionary<string, object>() { { "tableName", "dry_earth" }, { "attribute", "干地" }, { "needNotAdmin", true } },
+            new Dictionary<string, object>() { { "tableName", "inflow_history" }, { "attribute", "来水历史" }, { "needNotAdmin", true } },
+            new Dictionary<string, object>() { { "tableName", "inflow_prediction" }, { "attribute", "每旬来水预测" }, { "needNotAdmin", true } },
+            new Dictionary<string, object>() { { "tableName", "irrigation_area" }, { "attribute", "灌溉面积" }, { "needNotAdmin", true } },
+            new Dictionary<string, object>() { { "tableName", "irrigation_institution" }, { "attribute", "灌溉制度" }, { "needNotAdmin", true } },
+            new Dictionary<string, object>() { { "tableName", "irrigation_method" }, { "attribute", "灌溉方法" }, { "needNotAdmin", true } },
+            new Dictionary<string, object>() { { "tableName", "round_order_info" }, { "attribute", "灌溉轮次信息" }, { "needNotAdmin", true } }
+        };
+
+        public const string TableAccount = "account";
+        public const string TableAdminDept = "admin_dept";
+        public const string TableCrop = "crop";
+        public const string TableCropRoundOrder = "crop_round_order";
+        public const string TableDryEarth = "dry_earth";
+        public const string TableInflowHistory = "inflow_history";
+        public const string TableInflowPrediction = "inflow_prediction";
+        public const string TableIrrigationArea = "irrigation_area";
+        public const string TableIrrigationInstitution = "irrigation_institution";
+        public const string TableIrrigationMethod = "irrigation_method";
+        public const string TableRoundOrderInfo = "round_order_info";
 
         public static string ItemAccountAccountId = "account_id";
         public static string ItemAccountAccountName = "account_name";

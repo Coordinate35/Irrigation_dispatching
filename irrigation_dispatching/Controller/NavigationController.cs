@@ -17,6 +17,7 @@ namespace irrigation_dispatching.Controller
         private DatabaseDriver databaseDriver;
         private string lastError;
         private Dictionary<string, object> userInfo;
+        private bool isAdmin;
 
         public NavigationController(string databaseDriverName = "DatabaseDriver")
         {
@@ -105,6 +106,14 @@ namespace irrigation_dispatching.Controller
                 else
                 {
                     userInfo = accountInfo;
+                    if (Database.AccountPrivilegeAdmin == (int)userInfo[Database.ItemAccountPrivilege])
+                    {
+                        isAdmin = true;
+                    }
+                    else
+                    {
+                        isAdmin = false;
+                    }
                     FreeViewByName("indexView");
                     LoadContentView();
                 }
@@ -114,7 +123,50 @@ namespace irrigation_dispatching.Controller
         private void LoadContentView()
         {
             ContentView contentView = (ContentView)GetViewByName("contentView");
+            for (int i = 0; i < Database.TableList.Count; i++)
+            {
+                if (isAdmin & (bool)Database.TableList[i]["needNotAdmin"])
+                {
+                    contentView.AddTable((string)Database.TableList[i]["attribute"]);
+                }
+            }
+            contentView.SelectTable += ContentView_SelectTable;
             contentView.ShowDialog();
+        }
+
+        private void ContentView_SelectTable(object sender, EventArgs e)
+        {
+            if (e is SelectTableEventArgs)
+            {
+                SelectTableEventArgs selectTableEventArgs = e as SelectTableEventArgs;
+                ContentView contentView = (ContentView)GetViewByName("contentView");
+                Dictionary<int, Dictionary<string, object>> tableData = null;
+                string tableName = null;
+                for (int i = 0; i < Database.TableList.Count; i++)
+                {
+                    if (selectTableEventArgs.TableAttribute == (string)Database.TableList[i]["attribute"])
+                    {
+                        tableName = (string)Database.TableList[i]["tableName"];
+                        break;
+                    }
+                }
+                HydroController hydroController = (HydroController)GetControllerByName("hydroController");
+                tableData = hydroController.GetTableDataByTableName(tableName);
+                if (null == tableData)
+                {
+                    Console.WriteLine(databaseDriver.LastError);
+                    Console.WriteLine(databaseDriver.LastQuery);
+                    lastError = ErrorMessage.GetDataFailed;
+                    int errorLevel = ErrorLevel.ErrorLevelWarning;
+                    ErrorMessageView errorMessageView = new ErrorMessageView(lastError, errorLevel);
+                    errorMessageView.ShowDialog();
+
+                }
+                else
+                {
+                    contentView.RefreshTable(tableData);
+                }
+            }
         }
 
         private void FreeViewByName(string viewName)
@@ -137,8 +189,12 @@ namespace irrigation_dispatching.Controller
             switch (controllerName)
             {
                 case "accountController":
-                    AccountController accountService = new AccountController(ref databaseDriver);
-                    controllers.Add(controllerName, accountService);
+                    AccountController accountController = new AccountController(ref databaseDriver);
+                    controllers.Add(controllerName, accountController);
+                    return controllers[controllerName];
+                case "hydroController":
+                    HydroController hydroController = new HydroController(ref databaseDriver);
+                    controllers.Add(controllerName, hydroController);
                     return controllers[controllerName];
                 default:
                     return null;

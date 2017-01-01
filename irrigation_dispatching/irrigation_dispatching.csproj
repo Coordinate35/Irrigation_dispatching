@@ -57,6 +57,7 @@
     <Compile Include="Config\Security.cs" />
     <Compile Include="Controller\AccountController.cs" />
     <Compile Include="Controller\Controller.cs" />
+    <Compile Include="Controller\HydroController.cs" />
     <Compile Include="Controller\NavigationController.cs" />
     <Compile Include="Core\DatabaseDriver.cs" />
     <Compile Include="Helper\Helper.cs" />

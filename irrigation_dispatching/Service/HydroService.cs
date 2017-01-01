@@ -89,9 +89,9 @@ namespace irrigation_dispatching.Service
             {
                 Dictionary<string, int> deptCropAreaItem = new Dictionary<string, int>()
                 {
-                    { "dept_id", (int)irrigationArea[i][Database.ItemIrrigationAreaDeptId] },
-                    { "crop_id", (int)irrigationArea[i][Database.ItemIrrigationAreaCropId] },
-                    { "area", (int)irrigationArea[i][Database.ItemIrrigationAreaArea] }
+                    { "dept_id", Convert.ToInt32(irrigationArea[i][Database.ItemIrrigationAreaDeptId]) },
+                    { "crop_id", Convert.ToInt32(irrigationArea[i][Database.ItemIrrigationAreaCropId]) },
+                    { "area", Convert.ToInt32(irrigationArea[i][Database.ItemIrrigationAreaArea]) }
                 };
                 deptCropArea.Insert(i, deptCropAreaItem);
             }
@@ -105,7 +105,7 @@ namespace irrigation_dispatching.Service
             List<int> dryEarth = new List<int>();
             for (int i = 0; i < dryEarthData.Count; i++)
             {
-                dryEarth.Insert((int)dryEarthData[i][Database.ItemDryEarthRoundOrder], (int)dryEarthData[i][Database.ItemDryEarthArea]);
+                dryEarth.Insert(Convert.ToInt32(dryEarthData[i][Database.ItemDryEarthRoundOrder]), Convert.ToInt32(dryEarthData[i][Database.ItemDryEarthArea]));
             }
             DryEarth = dryEarth;
             return dryEarthData;
@@ -119,8 +119,8 @@ namespace irrigation_dispatching.Service
             {
                 Dictionary<string, int> institutionItem = new Dictionary<string, int>()
                 {
-                    { "round_order", (int)irrigationInstitutionData[i][Database.ItemIrrigationInstitutionRoundOrder] },
-                    { "crop_id",  (int)irrigationInstitutionData[i][Database.ItemIrrigationInstitutionCropId] }
+                    { "round_order", Convert.ToInt32(irrigationInstitutionData[i][Database.ItemIrrigationInstitutionRoundOrder]) },
+                    { "crop_id",  Convert.ToInt32(irrigationInstitutionData[i][Database.ItemIrrigationInstitutionCropId]) }
                 };
                 irrigationInstitution.Insert(i, institutionItem);
             }
@@ -136,11 +136,11 @@ namespace irrigation_dispatching.Service
             {
                 Dictionary<string, int> roundOrderInfoItem = new Dictionary<string, int>()
                 {
-                    { "start_time", (int)roundOrderInfoData[i][Database.ItemRoundOrderInfoStartTime] },
-                    { "end_time", (int)roundOrderInfoData[i][Database.ItemRoundOrderInfoEndTime] },
-                    { "qouta", (int)roundOrderInfoData[i][Database.ItemRoundOrderInfoQouta] }
+                    { "start_time", Convert.ToInt32(roundOrderInfoData[i][Database.ItemRoundOrderInfoStartTime]) },
+                    { "end_time", Convert.ToInt32(roundOrderInfoData[i][Database.ItemRoundOrderInfoEndTime]) },
+                    { "qouta", Convert.ToInt32(roundOrderInfoData[i][Database.ItemRoundOrderInfoQouta]) }
                 };
-                roundOrderInfo.Insert((int)roundOrderInfoData[i][Database.ItemRoundOrderInfoRoundOrder], roundOrderInfoItem);
+                roundOrderInfo.Insert(Convert.ToInt32(roundOrderInfoData[i][Database.ItemRoundOrderInfoRoundOrder]), roundOrderInfoItem);
             }
             RoundOrderInfo = roundOrderInfo;
             return roundOrderInfoData;
@@ -156,7 +156,7 @@ namespace irrigation_dispatching.Service
                 {
                     {  "average_flow", (double)inflowPredictionData[i][Database.ItemInflowPredictionAverageFlow] / Database.InflowExpandTimes }
                 };
-                inflowPrediction.Insert((int)inflowPredictionData[i][Database.ItemInflowPredictionPeriodOrder], inflowPredictionItem);
+                inflowPrediction.Insert(Convert.ToInt32(inflowPredictionData[i][Database.ItemInflowPredictionPeriodOrder]), inflowPredictionItem);
             }
             InflowPrediction = inflowPrediction;
             return inflowPredictionData;
@@ -196,6 +196,31 @@ namespace irrigation_dispatching.Service
             }
             Crop = crop;
             return cropData;
+        }
+
+        public Dictionary<int, Dictionary<string, object>> GetTableDataByTableName(string tableName)
+        {
+            switch (tableName)
+            {
+                case Database.TableAccount:
+                    return GetAccount();
+                case Database.TableAdminDept:
+                    return GetAdminDept();
+                case Database.TableCrop:
+                    return GetCrop();
+                case Database.TableCropRoundOrder:
+                    return GetRoundOrderInfo();
+                case Database.TableDryEarth:
+                    return GetDryEarth();
+                case Database.TableInflowPrediction:
+                    return GetInflowPrediction();
+                case Database.TableIrrigationArea:
+                    return GetDeptCropArea();
+                case Database.TableIrrigationInstitution:
+                    return GetIrrigationInstitution();
+                default:
+                    return null;
+            }
         }
 
         public void GetHydroData()
