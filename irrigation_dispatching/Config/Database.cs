@@ -90,5 +90,6 @@ namespace irrigation_dispatching.Config
 
         public static int AccountPrivilegeAdmin = 0;
         public static int AccountPrivilegeUser = 1;
+        public static int InflowExpandTimes = 100;
     }
 }

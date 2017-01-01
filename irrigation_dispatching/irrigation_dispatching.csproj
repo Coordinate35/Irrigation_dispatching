@@ -80,6 +80,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Service\AccountService.cs" />
+    <Compile Include="Service\HydroService.cs" />
     <Compile Include="Service\Service.cs" />
     <Compile Include="View\ContentView.cs">
       <SubType>Form</SubType>

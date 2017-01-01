@@ -33,7 +33,6 @@ namespace irrigation_dispatching.Library
         private int daySeconds = 86400;
         private int roundDays = 10;
         private int roundPerMonth = 3;
-        private int inflowExpandTimes = 100;
         private int maxMonthDayNumber = 31;
         private int idealMaxDayNumber = 30;
 
