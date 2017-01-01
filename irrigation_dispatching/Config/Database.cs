@@ -72,11 +72,10 @@ namespace irrigation_dispatching.Config
         public static string ItemIrrigationInstitutionAvailable = "available";
 
         public static string ItemIrrigationMethodMethodId = "method_id";
-        public static string ItemIrrigationMethodRoundOrder = "round_order";
-        public static string ItemIrrigationMethodSeason = "season";
-        public static string ItemIrrigationMethodStartTime = "start_time";
-        public static string ItemIrrigationMethodEndTime = "end_time";
-        public static string ItemIrrigationMethodQuata = "quata";
+        public static string ItemIrrigationMethodCropId = "crop_id";
+        public static string ItemIrrigationMethodMethod = "method";
+        public static string ItemIrrigationMethodDesignedOutputMin = "designed_output_min";
+        public static string ItemIrrigationMethodDesignedOUtputMax = "designed_output_max";
         public static string ItemIrrigationMethodAvailable = "available";
 
         public static string ItemRoundOrderInfoRoundOrder = "round_order";
@@ -84,7 +83,7 @@ namespace irrigation_dispatching.Config
         public static string ItemRoundOrderInfoStartTime = "start_time";
         public static string ItemRoundOrderInfoEndTime = "end_time";
         public static string ItemRoundOrderInfoQouta = "qouta";
-        public static string ItemRoundOrderInfo = "available";
+        public static string ItemRoundOrderInfoAvailable = "available";
 
         public static int AvailableTrue = 1;
         public static int AvailableFalse = 0;

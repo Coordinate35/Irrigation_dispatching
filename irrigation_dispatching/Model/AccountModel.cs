@@ -23,7 +23,8 @@ namespace irrigation_dispatching.Model
             string selectedContent = Database.ItemAccountAccountId.ToString() +
                 ", " + Database.ItemAccountAccountName.ToString() +
                 ", " + Database.ItemAccountPasswd.ToString() +
-                ", " + Database.ItemAccountRegisterTime.ToString();
+                ", " + Database.ItemAccountRegisterTime.ToString() +
+                ", " + Database.ItemAccountPrivilege.ToString();
             databaseDriver.SetSelect(selectedContent);
             databaseDriver.SetFrom(tableName);
             databaseDriver.SetAndWhere(Database.ItemAccountAccountName, accountName);
@@ -37,11 +38,26 @@ namespace irrigation_dispatching.Model
             string selectedContent = Database.ItemAccountAccountId.ToString() +
                 ", " + Database.ItemAccountAccountName.ToString() +
                 ", " + Database.ItemAccountPasswd.ToString() +
-                ", " + Database.ItemAccountRegisterTime.ToString();
+                ", " + Database.ItemAccountRegisterTime.ToString() +
+                ", " + Database.ItemAccountPrivilege.ToString();
             databaseDriver.SetSelect(selectedContent);
             databaseDriver.SetFrom(tableName);
             databaseDriver.SetAndWhere(Database.ItemAccountAvailable, Database.AvailableTrue);
             databaseDriver.SetAndWhere(Database.ItemAccountPrivilege, Database.AccountPrivilegeAdmin);
+            Dictionary<int, Dictionary<string, object>> account = databaseDriver.Get();
+            return account;
+        }
+
+        public override Dictionary<int, Dictionary<string, object>> GetAllValidData()
+        {
+            string selectedContent = Database.ItemAccountAccountId.ToString() +
+               ", " + Database.ItemAccountAccountName.ToString() +
+               ", " + Database.ItemAccountPasswd.ToString() +
+               ", " + Database.ItemAccountRegisterTime.ToString() +
+               ", " + Database.ItemAccountPrivilege.ToString();
+            databaseDriver.SetSelect(selectedContent);
+            databaseDriver.SetFrom(tableName);
+            databaseDriver.SetAndWhere(Database.ItemAccountAvailable, Database.AvailableTrue);
             Dictionary<int, Dictionary<string, object>> account = databaseDriver.Get();
             return account;
         }

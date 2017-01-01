@@ -15,9 +15,6 @@ namespace irrigation_dispatching
         [STAThread]
         static void Main()
         {
-            //Application.EnableVisualStyles();
-            //Application.SetCompatibleTextRenderingDefault(false);
-            //Application.Run();
             NavigationController navigationController = new NavigationController();
         }
     }

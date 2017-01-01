@@ -60,9 +60,23 @@
     <Compile Include="Controller\NavigationController.cs" />
     <Compile Include="Core\DatabaseDriver.cs" />
     <Compile Include="Helper\Helper.cs" />
+    <Compile Include="irrigation_dispatchingDataSet.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>irrigation_dispatchingDataSet.xsd</DependentUpon>
+    </Compile>
     <Compile Include="Library\Hydro.cs" />
     <Compile Include="Model\AccountModel.cs" />
+    <Compile Include="Model\AdminDeptModel.cs" />
+    <Compile Include="Model\CropModel.cs" />
+    <Compile Include="Model\DryEarthModel.cs" />
+    <Compile Include="Model\InflowHistoryModel.cs" />
+    <Compile Include="Model\InflowPredictionModel.cs" />
+    <Compile Include="Model\IrrigationAreaModel.cs" />
+    <Compile Include="Model\IrrigationInstitutionModel.cs" />
+    <Compile Include="Model\IrrigationMethodModel.cs" />
     <Compile Include="Model\Model.cs" />
+    <Compile Include="Model\RoundOrderInfoModel.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Service\AccountService.cs" />
@@ -100,6 +114,9 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="View\ContentView.resx">
+      <DependentUpon>ContentView.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="View\ErrorMessageView.resx">
       <DependentUpon>ErrorMessageView.cs</DependentUpon>
     </EmbeddedResource>
@@ -110,6 +127,17 @@
       <DependentUpon>SetAdminView.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="ClassDiagram1.cd" />
+    <None Include="irrigation_dispatchingDataSet.xsc">
+      <DependentUpon>irrigation_dispatchingDataSet.xsd</DependentUpon>
+    </None>
+    <None Include="irrigation_dispatchingDataSet.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>irrigation_dispatchingDataSet.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="irrigation_dispatchingDataSet.xss">
+      <DependentUpon>irrigation_dispatchingDataSet.xsd</DependentUpon>
+    </None>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

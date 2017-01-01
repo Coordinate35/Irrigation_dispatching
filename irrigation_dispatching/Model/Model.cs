@@ -29,5 +29,7 @@ namespace irrigation_dispatching.Model
         {
             return databaseDriver.Insert(tableName, entries);
         }
+
+        public abstract Dictionary<int, Dictionary<string, object>> GetAllValidData();
     }
 }

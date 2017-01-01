@@ -7,7 +7,6 @@ using System.Windows.Forms;
 using irrigation_dispatching.View;
 using irrigation_dispatching.Core;
 using irrigation_dispatching.Config;
-using irrigation_dispatching.Controller;
 
 namespace irrigation_dispatching.Controller
 {
@@ -34,6 +33,12 @@ namespace irrigation_dispatching.Controller
                 SetAdminView setAdminView = (SetAdminView)GetViewByName("setAdminView");
                 setAdminView.AdminSet += SetAdminView_AdminSet;
                 setAdminView.ShowDialog();
+            }
+            else
+            {
+                IndexView indexView = (IndexView)GetViewByName("indexView");
+                indexView.Login += IndexView_Login;
+                indexView.ShowDialog();
             }
         }
 
