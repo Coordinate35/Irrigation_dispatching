@@ -20,6 +20,8 @@ namespace irrigation_dispatching.Service
         private IrrigationAreaModel irrigationAreaModel;
         private IrrigationInstitutionModel irrigationInstitutionModel;
         private RoundOrderInfoModel roundOrderInfoModel;
+        private InflowHistoryModel inflowHistoryModel;
+        private IrrigationMethodModel irrigationMethodModel;
 
         public List<Dictionary<string, int>> DeptCropArea
         {
@@ -79,6 +81,10 @@ namespace irrigation_dispatching.Service
             inflowPredictionModel = new InflowPredictionModel(ref databaseDriver);
             irrigationInstitutionModel = new IrrigationInstitutionModel(ref databaseDriver);
             roundOrderInfoModel = new RoundOrderInfoModel(ref databaseDriver);
+
+            inflowHistoryModel = new InflowHistoryModel(ref databaseDriver);
+            irrigationMethodModel = new IrrigationMethodModel(ref databaseDriver);
+
         }
 
         public Dictionary<int, Dictionary<string, object>> GetDeptCropArea()
@@ -105,7 +111,7 @@ namespace irrigation_dispatching.Service
             List<int> dryEarth = new List<int>();
             for (int i = 0; i < dryEarthData.Count; i++)
             {
-                dryEarth.Insert(Convert.ToInt32(dryEarthData[i][Database.ItemDryEarthRoundOrder]), Convert.ToInt32(dryEarthData[i][Database.ItemDryEarthArea]));
+                dryEarth.Insert(Convert.ToInt32(dryEarthData[i][Database.ItemDryEarthRoundOrder]) - 1, Convert.ToInt32(dryEarthData[i][Database.ItemDryEarthArea]));
             }
             DryEarth = dryEarth;
             return dryEarthData;
@@ -140,7 +146,7 @@ namespace irrigation_dispatching.Service
                     { "end_time", Convert.ToInt32(roundOrderInfoData[i][Database.ItemRoundOrderInfoEndTime]) },
                     { "qouta", Convert.ToInt32(roundOrderInfoData[i][Database.ItemRoundOrderInfoQouta]) }
                 };
-                roundOrderInfo.Insert(Convert.ToInt32(roundOrderInfoData[i][Database.ItemRoundOrderInfoRoundOrder]), roundOrderInfoItem);
+                roundOrderInfo.Insert(Convert.ToInt32(roundOrderInfoData[i][Database.ItemRoundOrderInfoRoundOrder]) - 1, roundOrderInfoItem);
             }
             RoundOrderInfo = roundOrderInfo;
             return roundOrderInfoData;
@@ -154,9 +160,9 @@ namespace irrigation_dispatching.Service
             {
                 Dictionary<string, double> inflowPredictionItem = new Dictionary<string, double>()
                 {
-                    {  "average_flow", (double)inflowPredictionData[i][Database.ItemInflowPredictionAverageFlow] / Database.InflowExpandTimes }
+                    {  "average_flow", Convert.ToDouble(inflowPredictionData[i][Database.ItemInflowPredictionAverageFlow]) / Database.InflowExpandTimes }
                 };
-                inflowPrediction.Insert(Convert.ToInt32(inflowPredictionData[i][Database.ItemInflowPredictionPeriodOrder]), inflowPredictionItem);
+                inflowPrediction.Insert(Convert.ToInt32(inflowPredictionData[i][Database.ItemInflowPredictionPeriodOrder]) - 1, inflowPredictionItem);
             }
             InflowPrediction = inflowPrediction;
             return inflowPredictionData;
@@ -198,6 +204,18 @@ namespace irrigation_dispatching.Service
             return cropData;
         }
 
+        public Dictionary<int, Dictionary<string, object>> GetInflowHistory()
+        {
+            Dictionary<int, Dictionary<string, object>> inflowHistoryData = inflowHistoryModel.GetAllValidData();
+            return inflowHistoryData;
+        }
+
+        public Dictionary<int, Dictionary<string, object>> GetIrrigationMethod()
+        {
+            Dictionary<int, Dictionary<string, object>> irrigationMethodData = irrigationMethodModel.GetAllValidData();
+            return irrigationMethodData;
+        }
+
         public Dictionary<int, Dictionary<string, object>> GetTableDataByTableName(string tableName)
         {
             switch (tableName)
@@ -208,8 +226,6 @@ namespace irrigation_dispatching.Service
                     return GetAdminDept();
                 case Database.TableCrop:
                     return GetCrop();
-                case Database.TableCropRoundOrder:
-                    return GetRoundOrderInfo();
                 case Database.TableDryEarth:
                     return GetDryEarth();
                 case Database.TableInflowPrediction:
@@ -218,6 +234,12 @@ namespace irrigation_dispatching.Service
                     return GetDeptCropArea();
                 case Database.TableIrrigationInstitution:
                     return GetIrrigationInstitution();
+                case Database.TableInflowHistory:
+                    return GetInflowHistory();
+                case Database.TableIrrigationMethod:
+                    return GetIrrigationMethod();
+                case Database.TableRoundOrderInfo:
+                    return GetRoundOrderInfo();
                 default:
                     return null;
             }

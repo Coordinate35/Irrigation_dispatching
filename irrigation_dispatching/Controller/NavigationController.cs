@@ -255,6 +255,11 @@ namespace irrigation_dispatching.Controller
                 lastError = ErrorMessage.ConnectDatabaseError;
                 isSuccess = false;
             }
+            if ( ! databaseDriver.Use(Database.DatabaseName))
+            {
+                lastError = ErrorMessage.UseDatabaseError;
+                isSuccess = false;
+            }
             return isSuccess;
         }
     }

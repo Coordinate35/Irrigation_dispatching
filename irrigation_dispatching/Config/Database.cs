@@ -14,12 +14,13 @@ namespace irrigation_dispatching.Config
         public static string UserId = "irrigation_dispatching";
         public static string Pwd = "Irrigationdispatching";
 
+        public const string DatabaseName = "irrigation_dispatching";
+
         public static List<Dictionary<string, object>> TableList = new List<Dictionary<string, object>>()
         {
             new Dictionary<string, object>() { { "tableName", "account" }, { "attribute", "账户" }, { "needNotAdmin", false } },
             new Dictionary<string, object>() { { "tableName", "admin_dept" }, { "attribute", "行政单位" }, { "needNotAdmin", true } },
             new Dictionary<string, object>() { { "tableName", "crop" }, { "attribute", "农作物" }, { "needNotAdmin", true } },
-            new Dictionary<string, object>() { { "tableName", "crop_round_order" }, { "attribute", "农作物所属灌溉轮次" }, { "needNotAdmin", true } },
             new Dictionary<string, object>() { { "tableName", "dry_earth" }, { "attribute", "干地" }, { "needNotAdmin", true } },
             new Dictionary<string, object>() { { "tableName", "inflow_history" }, { "attribute", "来水历史" }, { "needNotAdmin", true } },
             new Dictionary<string, object>() { { "tableName", "inflow_prediction" }, { "attribute", "每旬来水预测" }, { "needNotAdmin", true } },
@@ -32,7 +33,6 @@ namespace irrigation_dispatching.Config
         public const string TableAccount = "account";
         public const string TableAdminDept = "admin_dept";
         public const string TableCrop = "crop";
-        public const string TableCropRoundOrder = "crop_round_order";
         public const string TableDryEarth = "dry_earth";
         public const string TableInflowHistory = "inflow_history";
         public const string TableInflowPrediction = "inflow_prediction";
@@ -58,16 +58,12 @@ namespace irrigation_dispatching.Config
         public static string ItemCropCropType = "crop_type";
         public static string ItemCropAvailable = "available";
 
-        public static string ItemCropRoundOrderRoundOrder = "round_order";
-        public static string ItemCropRoundOrderCropId = "crop_id";
-        public static string ItemCropRoundOrderAvailable = "available";
-
         public static string ItemDryEarthRoundOrder = "round_order";
         public static string ItemDryEarthArea = "area";
         public static string ItemDryEarthAvailable = "available";
 
         public static string ItemInflowHistoryYear = "year";
-        public static string ItemInflowHistoryAverageFlow = "average_inflow";
+        public static string ItemInflowHistoryAverageFlow = "average_flow";
         public static string ItemInflowHistoryAvailable = "available";
 
         public static string ItemInflowPredictionPeriodOrder = "period_order";
@@ -90,7 +86,7 @@ namespace irrigation_dispatching.Config
         public static string ItemIrrigationMethodCropId = "crop_id";
         public static string ItemIrrigationMethodMethod = "method";
         public static string ItemIrrigationMethodDesignedOutputMin = "designed_output_min";
-        public static string ItemIrrigationMethodDesignedOUtputMax = "designed_output_max";
+        public static string ItemIrrigationMethodDesignedOUtputMax = "disigned_output_max";
         public static string ItemIrrigationMethodAvailable = "available";
 
         public static string ItemRoundOrderInfoRoundOrder = "round_order";

@@ -124,6 +124,23 @@ namespace irrigation_dispatching.Core
             return true;
         }
 
+        public bool Use(string databaseName)
+        {
+            lastQuery = "USE " + databaseName;
+            try
+            {
+                command = new SqlCommand(lastQuery, connection);
+                resultReader = command.ExecuteReader();
+                resultReader.Close();
+            }
+            catch (Exception e)
+            {
+                error = e.ToString();
+                return false;
+            }
+            return true;
+        }
+
         public void SetSelect(string columns)
         {
             partialCommand["select"] = "SELECT " + columns;
