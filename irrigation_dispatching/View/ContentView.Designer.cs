@@ -28,15 +28,16 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.Windows.Forms.DataGridView dataPresentGridView;
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.tableListTreeView = new System.Windows.Forms.TreeView();
             this.计算水文结果 = new System.Windows.Forms.Button();
-            this.dataPresentGridView = new System.Windows.Forms.DataGridView();
+            dataPresentGridView = new System.Windows.Forms.DataGridView();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataPresentGridView)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(dataPresentGridView)).BeginInit();
             this.SuspendLayout();
             // 
             // splitContainer1
@@ -52,7 +53,7 @@
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.计算水文结果);
-            this.splitContainer1.Panel2.Controls.Add(this.dataPresentGridView);
+            this.splitContainer1.Panel2.Controls.Add(dataPresentGridView);
             this.splitContainer1.Size = new System.Drawing.Size(1178, 544);
             this.splitContainer1.SplitterDistance = 348;
             this.splitContainer1.TabIndex = 0;
@@ -78,13 +79,13 @@
             // 
             // dataPresentGridView
             // 
-            this.dataPresentGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataPresentGridView.Dock = System.Windows.Forms.DockStyle.Top;
-            this.dataPresentGridView.Location = new System.Drawing.Point(0, 0);
-            this.dataPresentGridView.Name = "dataPresentGridView";
-            this.dataPresentGridView.RowTemplate.Height = 30;
-            this.dataPresentGridView.Size = new System.Drawing.Size(826, 471);
-            this.dataPresentGridView.TabIndex = 0;
+            dataPresentGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataPresentGridView.Dock = System.Windows.Forms.DockStyle.Top;
+            dataPresentGridView.Location = new System.Drawing.Point(0, 0);
+            dataPresentGridView.Name = "dataPresentGridView";
+            dataPresentGridView.RowTemplate.Height = 30;
+            dataPresentGridView.Size = new System.Drawing.Size(826, 471);
+            dataPresentGridView.TabIndex = 0;
             // 
             // ContentView
             // 
@@ -98,7 +99,7 @@
             this.splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dataPresentGridView)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(dataPresentGridView)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -107,7 +108,6 @@
 
         private System.Windows.Forms.SplitContainer splitContainer1;
         private System.Windows.Forms.Button 计算水文结果;
-        private System.Windows.Forms.DataGridView dataPresentGridView;
         private System.Windows.Forms.TreeView tableListTreeView;
     }
 }

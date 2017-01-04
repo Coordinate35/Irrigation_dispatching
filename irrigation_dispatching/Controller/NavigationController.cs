@@ -125,7 +125,7 @@ namespace irrigation_dispatching.Controller
             ContentView contentView = (ContentView)GetViewByName("contentView");
             for (int i = 0; i < Database.TableList.Count; i++)
             {
-                if (isAdmin & (bool)Database.TableList[i]["needNotAdmin"])
+                if (isAdmin || (bool)Database.TableList[i]["needNotAdmin"])
                 {
                     contentView.AddTable((string)Database.TableList[i]["attribute"]);
                 }

@@ -28,31 +28,35 @@ namespace irrigation_dispatching.View
 
         public void RefreshTable(Dictionary<int, Dictionary<string, object>> tableData)
         {
-            this.dataPresentGridView = new DataGridView();
+            DataGridView dataPresentGridView = new DataGridView();
+            this.splitContainer1.Panel2.Controls.RemoveByKey("dataPresentGridView");
+            this.splitContainer1.Panel2.Controls.Add(dataPresentGridView);
+            dataPresentGridView.Name = "dataPresentGridView";
+            dataPresentGridView.Dock = DockStyle.Top;
+            dataPresentGridView.ColumnCount = tableData[0].Keys.Count;
+            dataPresentGridView.Size = new Size(826, 471);
+            dataPresentGridView.CellBorderStyle = DataGridViewCellBorderStyle.Single;
             foreach (string key in tableData[0].Keys)
             {
-                dataPresentGridView.Columns.Add(key, key);
+                int columnIndex = dataPresentGridView.Columns.Add(key, key);
             }
             
             for (int i = 0; i < tableData.Count; i++)
             {
+                int rowIndex = 0;
+                rowIndex = dataPresentGridView.Rows.Add();
                 int count = 0;
-                dataPresentGridView.Rows.Add(tableData.Count);
                 foreach (KeyValuePair<string, object> value in tableData[i])
                 {
-                    dataPresentGridView.Rows[i].Cells[count].Value = value.Value;
+                    dataPresentGridView.Rows[rowIndex].Cells[count].Value = value.Value;
                     count += 1;
+                    //Console.WriteLine(dataPresentGridView.Columns[0].Displayed);
                 }
             }
             dataPresentGridView.Dock = DockStyle.Fill;
         }
 
         private void tableListTreeView_AfterSelect(object sender, TreeViewEventArgs e)
-        { 
-
-        }
-
-        private void tableListTreeView_Click(object sender, EventArgs e)
         {
             for (int i = 0; i < tableListTreeView.Nodes.Count; i++)
             {
@@ -62,6 +66,10 @@ namespace irrigation_dispatching.View
                     SelectTable?.Invoke(this, selectTableEventArgs);
                 }
             }
+        }
+
+        private void tableListTreeView_Click(object sender, EventArgs e)
+        {
         }
     }
 
