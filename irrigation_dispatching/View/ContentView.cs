@@ -28,6 +28,7 @@ namespace irrigation_dispatching.View
 
         public void RefreshTable(Dictionary<int, Dictionary<string, object>> tableData)
         {
+            int count = 0;
             DataGridView dataPresentGridView = new DataGridView();
             this.splitContainer1.Panel2.Controls.RemoveByKey("dataPresentGridView");
             this.splitContainer1.Panel2.Controls.Add(dataPresentGridView);
@@ -38,19 +39,19 @@ namespace irrigation_dispatching.View
             dataPresentGridView.CellBorderStyle = DataGridViewCellBorderStyle.Single;
             foreach (string key in tableData[0].Keys)
             {
-                int columnIndex = dataPresentGridView.Columns.Add(key, key);
+                dataPresentGridView.Columns[count].Name = key;
+                count += 1;
             }
             
             for (int i = 0; i < tableData.Count; i++)
             {
                 int rowIndex = 0;
                 rowIndex = dataPresentGridView.Rows.Add();
-                int count = 0;
+                count = 0;
                 foreach (KeyValuePair<string, object> value in tableData[i])
                 {
                     dataPresentGridView.Rows[rowIndex].Cells[count].Value = value.Value;
                     count += 1;
-                    //Console.WriteLine(dataPresentGridView.Columns[0].Displayed);
                 }
             }
             dataPresentGridView.Dock = DockStyle.Fill;
