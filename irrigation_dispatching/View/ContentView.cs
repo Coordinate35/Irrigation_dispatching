@@ -7,12 +7,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using irrigation_dispatching.Config;
 
 namespace irrigation_dispatching.View
 {
     public partial class ContentView : Form
     {
         public event EventHandler SelectTable;
+
+        private Dictionary<int, Dictionary<string, object>> tableData;
 
         public ContentView()
         {
@@ -28,6 +31,7 @@ namespace irrigation_dispatching.View
 
         public void RefreshTable(Dictionary<int, Dictionary<string, object>> tableData)
         {
+            this.tableData = tableData;
             int count = 0;
             DataGridView dataPresentGridView = new DataGridView();
             this.splitContainer1.Panel2.Controls.RemoveByKey("dataPresentGridView");
@@ -35,8 +39,12 @@ namespace irrigation_dispatching.View
             dataPresentGridView.Name = "dataPresentGridView";
             dataPresentGridView.Dock = DockStyle.Top;
             dataPresentGridView.ColumnCount = tableData[0].Keys.Count;
-            dataPresentGridView.Size = new Size(826, 471);
+            dataPresentGridView.Size = new Size(
+                ViewConst.ContentViewDataPresentGridViewWidth,
+                ViewConst.ContentViewDataPresentGridViewHeight
+            );
             dataPresentGridView.CellBorderStyle = DataGridViewCellBorderStyle.Single;
+            //dataPresentGridView.Dock = DockStyle.Fill;
             foreach (string key in tableData[0].Keys)
             {
                 dataPresentGridView.Columns[count].Name = key;
@@ -54,7 +62,12 @@ namespace irrigation_dispatching.View
                     count += 1;
                 }
             }
-            dataPresentGridView.Dock = DockStyle.Fill;
+            dataPresentGridView.CellValueChanged += DataPresentGridView_CellValueChanged;
+        }
+
+        private void DataPresentGridView_CellValueChanged(object sender, DataGridViewCellEventArgs e)
+        {
+            Console.WriteLine(1);
         }
 
         private void tableListTreeView_AfterSelect(object sender, TreeViewEventArgs e)
