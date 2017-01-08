@@ -44,7 +44,6 @@ namespace irrigation_dispatching.View
                 ViewConst.ContentViewDataPresentGridViewHeight
             );
             dataPresentGridView.CellBorderStyle = DataGridViewCellBorderStyle.Single;
-            //dataPresentGridView.Dock = DockStyle.Fill;
             foreach (string key in tableData[0].Keys)
             {
                 dataPresentGridView.Columns[count].Name = key;
@@ -84,6 +83,34 @@ namespace irrigation_dispatching.View
 
         private void tableListTreeView_Click(object sender, EventArgs e)
         {
+        }
+    }
+
+    public class CellValueChangeEventArgs : EventArgs
+    {
+        public Dictionary<string, object> Row
+        {
+            get;
+            private set;
+        }
+
+        public string ItemName
+        {
+            get;
+            private set;
+        }
+
+        public object ItemValue
+        {
+            get;
+            private set;
+        }
+
+        public CellValueChangeEventArgs(Dictionary<string, object> row, string itemName, object itemValue)
+        {
+            Row = row;
+            ItemName = itemName;
+            ItemValue = itemValue;
         }
     }
 
