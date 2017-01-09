@@ -16,6 +16,7 @@ namespace irrigation_dispatching.View
         public event EventHandler SelectTable;
 
         private Dictionary<int, Dictionary<string, object>> tableData;
+        private string tableName;
 
         public ContentView()
         {
@@ -29,8 +30,9 @@ namespace irrigation_dispatching.View
             tableListTreeView.Nodes.Add(tableitem);
         }
 
-        public void RefreshTable(Dictionary<int, Dictionary<string, object>> tableData)
+        public void RefreshTable(string tableName, Dictionary<int, Dictionary<string, object>> tableData, bool isAdmin)
         {
+            this.tableName = tableName;
             this.tableData = tableData;
             int count = 0;
             DataGridView dataPresentGridView = new DataGridView();
@@ -44,12 +46,22 @@ namespace irrigation_dispatching.View
                 ViewConst.ContentViewDataPresentGridViewHeight
             );
             dataPresentGridView.CellBorderStyle = DataGridViewCellBorderStyle.Single;
+            dataPresentGridView.ReadOnly = true;
             foreach (string key in tableData[0].Keys)
             {
                 dataPresentGridView.Columns[count].Name = key;
                 count += 1;
             }
             
+            if (isAdmin)
+            {
+                DataGridViewButtonColumn updateBottonColumn = new DataGridViewButtonColumn();
+                updateBottonColumn.HeaderText = ViewConst.ContentViewDataPresentGridViewUpdateBotton;
+                updateBottonColumn.Text = ViewConst.ContentViewDataPresentGridViewUpdateBotton;
+                updateBottonColumn.UseColumnTextForButtonValue = true;
+                dataPresentGridView.Columns.Add(updateBottonColumn);
+
+            }
             for (int i = 0; i < tableData.Count; i++)
             {
                 int rowIndex = 0;
@@ -60,13 +72,14 @@ namespace irrigation_dispatching.View
                     dataPresentGridView.Rows[rowIndex].Cells[count].Value = value.Value;
                     count += 1;
                 }
+                if (isAdmin)
+                {
+                    DataGridViewButtonCell editButton = new DataGridViewButtonCell();
+                    editButton.Tag = i;
+                    editButton.Value = ViewConst.ContentViewDataPresentGridViewUpdateBotton;
+                    dataPresentGridView.Rows[rowIndex].Cells[count].Value = editButton;
+                }
             }
-            dataPresentGridView.CellValueChanged += DataPresentGridView_CellValueChanged;
-        }
-
-        private void DataPresentGridView_CellValueChanged(object sender, DataGridViewCellEventArgs e)
-        {
-            Console.WriteLine(1);
         }
 
         private void tableListTreeView_AfterSelect(object sender, TreeViewEventArgs e)
@@ -86,7 +99,7 @@ namespace irrigation_dispatching.View
         }
     }
 
-    public class CellValueChangeEventArgs : EventArgs
+    public class ItemValueChangeEventArgs : EventArgs
     {
         public Dictionary<string, object> Row
         {
@@ -106,8 +119,15 @@ namespace irrigation_dispatching.View
             private set;
         }
 
-        public CellValueChangeEventArgs(Dictionary<string, object> row, string itemName, object itemValue)
+        public string TableName
         {
+            get;
+            private set;
+        }
+
+        public ItemValueChangeEventArgs(string tableName, Dictionary<string, object> row, string itemName, object itemValue)
+        {
+            TableName = tableName;
             Row = row;
             ItemName = itemName;
             ItemValue = itemValue;

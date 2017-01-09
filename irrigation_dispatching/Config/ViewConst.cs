@@ -11,5 +11,7 @@ namespace irrigation_dispatching.Config
 
         public const int ContentViewDataPresentGridViewHeight = 471;
         public const int ContentViewDataPresentGridViewWidth = 826;
+
+        public const string ContentViewDataPresentGridViewUpdateBotton = "修改";
     }
 }

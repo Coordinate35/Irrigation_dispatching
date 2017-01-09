@@ -160,11 +160,10 @@ namespace irrigation_dispatching.Controller
                     int errorLevel = ErrorLevel.ErrorLevelWarning;
                     ErrorMessageView errorMessageView = new ErrorMessageView(lastError, errorLevel);
                     errorMessageView.ShowDialog();
-
                 }
                 else
                 {
-                    contentView.RefreshTable(tableData);
+                    contentView.RefreshTable(tableName, tableData, isAdmin);
                 }
             }
         }
